@@ -1,70 +1,56 @@
-import peewee
+from peewee import *
 
-hospitalDB = peewee.SqliteDatabase('HospitalDatabase.db')
+#setting DB connection
+db = MySQLDatabase('hospitalDB', user='root', password="aergia13", host="localhost")
 
-def reset(tableName):
-	if tableName.table_exists():
-		tableName.drop_table()
-		print "Hi"
-	tableName.create_table()
-
-class PatTable(peewee.Model):
+#base model for meta data of the tables
+class BaseModel(Model):
 	class Meta:
-		db = hospitalDB
-	
-	name = peewee.CharField(max_length=60)
-	addr = peewee.CharField(max_length=200)
-	age = peewee.IntegerField(null=True)
-	dob = peewee.DateField()
-	sex = peewee.CharField(max_length=1) # Check for only 'M' or 'F' to be done
-	phoneNo = peewee.CharField(max_length=36)
-	alias = peewee.CharField(max_length=14)
-	regnNo = peewee.CharField(max_length=16, primary_key=True)
-	occupation = peewee.CharField(max_length=20)
-	conName = peewee.CharField(max_length=30)
-	conAddr = peewee.CharField(max_length=100)
-	conPhone = peewee.CharField(max_length=12)
-	idNos = peewee.CharField(max_length=50)
-	ConRTP = peewee.CharField(max_length=12,null=True)
+		database = db
 
+#all tables derive from the BaseModel for the meta data
+#patients table
+class PatTable(BaseModel):
+	name = CharField(max_length=60)
+	addr = CharField(max_length=200)
+	age = IntegerField(null=True)
+	dob = DateField()
+	sex = CharField(max_length=1) # Check for only 'M' or 'F' to be done
+	phoneNo = CharField(max_length=36)
+	alias = CharField(max_length=14)
+	regnNo = CharField(max_length=16, primary_key=True)
+	occupation = CharField(max_length=20)
+	conName = CharField(max_length=30)
+	conAddr = CharField(max_length=100)
+	conPhone = CharField(max_length=12)
+	idNos = CharField(max_length=50)
+	ConRTP = CharField(max_length=12,null=True)
 
-class PatData(peewee.Model):
+#patient data
+class PatData(BaseModel):
 	class Meta:
-		db = hospitalDB
-		
-		primary_key = peewee.CompositeKey('regnNo','currentUnixTime')
-	
-	
-	regnNo = peewee.ForeignKeyField(PatTable, related_name = 'visits')
-	currentUnixTime = peewee.BigIntegerField()
-	nextDateOfVisit = peewee.DateField()
-	bloodPressure = peewee.CharField(max_length=5)
-	pulseRate = peewee.CharField(max_length=5)
-	bodyTemperature = peewee.CharField(max_length=5)
-	bmi = peewee.CharField(max_length=5)
-	diagnosis = peewee.CharField(max_length=50)
-	weight = peewee.CharField(max_length=8)
+		primary_key = CompositeKey('regnNo','currentUnixTime')
+	regnNo = ForeignKeyField(PatTable, related_name = 'visits')
+	currentUnixTime = BigIntegerField()
+	nextDateOfVisit = DateField()
+	bloodPressure = CharField(max_length=5)
+	pulseRate = CharField(max_length=5)
+	bodyTemperature = CharField(max_length=5)
+	bmi = CharField(max_length=5)
+	diagnosis = CharField(max_length=50)
+	weight = CharField(max_length=8)
 
-class TestData(peewee.Model):
+
+class TestData(BaseModel):
 	class Meta:
-		db = hospitalDB
-		primary_key = peewee.CompositeKey('regnNo','currentUnixTime')
-	
-	regnNo = peewee.ForeignKeyField(PatTable, related_name = 'tests')
-	currentUnixTime = peewee.BigIntegerField()
-	testName = peewee.CharField(max_length=50)
-	testResult = peewee.CharField(max_length=100)
+		primary_key = CompositeKey('regnNo','currentUnixTime')
+	regnNo = ForeignKeyField(PatTable, related_name = 'tests')
+	currentUnixTime = BigIntegerField()
+	testName = CharField(max_length=50)
+	testResult = CharField(max_length=100)
 			
 
 if __name__=='__main__':
-	#Script mode - Whe-n you run script, tables are created	
-	hospitalDB.connect()
-	reset(PatData)
-	reset(PatTable)
-	reset(TestData)
-
-	#a = TestData.create(regnNo='35',currentUnixTime=12452534,testName='a2c',testResult='sa5')
-	#a.save()
-
-	hospitalDB.commit()
-	hospitalDB.close()
+	db.connect()
+	db.create_tables([PatTable, PatData, TestData],safe=True)
+	db.close()
