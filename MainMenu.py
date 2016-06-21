@@ -22,6 +22,55 @@ try:
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+        
+class MyDialog(QtGui.QDialog):
+    def __init__(self, parent=None):
+        super(MyDialog, self).__init__(parent)
+
+        self.setGeometry(300, 300, 2000, 150)
+        self.sql_query = QLineEdit()
+        self.btn_query = QPushButton("View")
+        self.btn_query.clicked.connect(self.queryProcess)
+        
+        self.model = QStandardItemModel()
+        self.view = QTableView()
+        
+        self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.verticalLayout.addWidget(self.sql_query)
+        self.verticalLayout.addWidget(self.btn_query)
+        self.verticalLayout.addWidget(self.view)
+
+    def queryProcess(self):
+        self.model.clear()
+        list = []
+        #print "Hi"
+        #write the query here and allow the headernames to be displayed based on result
+        #list = writeRawQuery(str(self.sql_query.text()))
+        self.model.setColumnCount(13)
+        headerNames=[]
+        headerNames.append("Registration No.")
+        headerNames.append("Name")
+        headerNames.append("Address")
+        headerNames.append("Age")
+        headerNames.append("DOB")
+        headerNames.append("Sex")
+        headerNames.append("Phone")
+        headerNames.append("Alias")
+        headerNames.append("Occupation")
+        headerNames.append("Con Name")
+        headerNames.append("Con Address")
+        headerNames.append("Con Phone")
+        headerNames.append("ID No")
+        headerNames.append("nextDateOfVisit")
+        headerNames.append("bloodPressure")
+        headerNames.append("pulseRate")
+        headerNames.append("bodyTemperature")
+        headerNames.append("bmi")
+        headerNames.append("diagnosis")
+        headerNames.append("weight")
+        self.model.setHorizontalHeaderLabels(headerNames)
+        self.view.setModel(self.model)
+
 
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
@@ -78,6 +127,10 @@ class Ui_MainMenu(object):
         self.label.setText(_translate("MainMenu", "WELCOME TO MANAPPARAI GENERAL HOSPITAL!", None))
         self.pushButton.setText(_translate("MainMenu", "New Record", None))
         self.pushButton_2.setText(_translate("MainMenu", "View Records", None))
+        self.pushButton_2.clicked.connect(self.on_pushButton_click)
+        self.dialogTextBrowser = MyDialog(self)
+        
+
         self.pushButton_3.setText(_translate("MainMenu", "Insert Query", None))
         self.label_3.setText(_translate("MainMenu", "Saving Lives. Every Day. Every Minute.", None))
 
