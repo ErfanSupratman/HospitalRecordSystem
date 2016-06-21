@@ -10,6 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+from PattableQueries import getPatientRecord
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -44,7 +45,11 @@ class MyDialog(QtGui.QDialog):
 
     def queryProcess(self):
         self.model.clear()
-        list = []
+        #list = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
+        RegistrationNo = str(self.sql_query.text())
+        patient = getPatientRecord(RegistrationNo)
+        print patient
+        #print patient.name
         #print "Hi"
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
@@ -133,7 +138,6 @@ class Ui_MainMenu(object):
     
     def on_pushButton_click(self):
         self.dialogTextBrowser.exec_()
-
         self.pushButton_3.setText(_translate("MainMenu", "Insert Query", None))
         self.label_3.setText(_translate("MainMenu", "Saving Lives. Every Day. Every Minute.", None))
 

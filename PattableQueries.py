@@ -39,3 +39,29 @@ def writeRawQuery(query):
 #		print j	
 #		print type(j)
 
+def getPatientRecord(regnNo):
+	patTableDetails = PatTable.get(regnNo = regnNo)
+	patDataDetails = PatData.get(regnNo = regnNo)
+	patientDetails = [	patTableDetails.regnNo,
+						patTableDetails.name,
+						patTableDetails.addr,
+						patTableDetails.age,
+						patTableDetails.dob,
+						patTableDetails.sex,
+						patTableDetails.phoneNo,
+						patTableDetails.alias,
+						patTableDetails.occupation,
+						patTableDetails.conName,
+						patTableDetails.conAddr,
+						patTableDetails.conPhone,
+						patTableDetails.idNos,
+						patDataDetails.nextDateOfVisit,
+						patDataDetails.pulseRate,
+						patDataDetails.bodyTemperature,
+						patDataDetails.bmi,
+						patDataDetails.diagnosis,
+						patDataDetails.weight ]
+	return patientDetails
+
+
+
