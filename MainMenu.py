@@ -8,6 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -128,7 +130,9 @@ class Ui_MainMenu(object):
         self.pushButton_2.setText(_translate("MainMenu", "View Records", None))
         self.pushButton_2.clicked.connect(self.on_pushButton_click)
         self.dialogTextBrowser = MyDialog(self)
-        
+    
+    def on_pushButton_click(self):
+        self.dialogTextBrowser.exec_()
 
         self.pushButton_3.setText(_translate("MainMenu", "Insert Query", None))
         self.label_3.setText(_translate("MainMenu", "Saving Lives. Every Day. Every Minute.", None))
