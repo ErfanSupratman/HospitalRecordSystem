@@ -10,6 +10,16 @@ from PattableQueries import insertPatient,writeRawQuery
 i=0
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
+from Hospital_Database import PatTable
+from peewee import *
+
+#function to increment regno in the PatTable
+def regno():
+  db = MySQLDatabase('hospitalDB', user='root', password="aergia13", host="localhost")
+  db.connect()
+  count = PatTable.select().count()
+  db.close()
+  return count+1;
 
 class Queryer(QWidget):
 	def __init__(self):
@@ -102,10 +112,10 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         	self.pushButton.clicked.connect(self.addRecord)
 
 	def addRecord(self):
-    		m = writeRawQuery('SELECT count(*) from pattable')
+    	#	m = writeRawQuery('SELECT count(*) from pattable')
 		inputs = { 		
 			'Name' : self.plainTextEdit.toPlainText(),
-			'RegnNo' : m[0][0]+1,
+			'RegnNo' : regno(),
 	    		'Address' : self.plainTextEdit_2.toPlainText(),
 	    		'Age' : self.plainTextEdit_3.toPlainText(),
 	    		'Phone': self.plainTextEdit_4.toPlainText(),

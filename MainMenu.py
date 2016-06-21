@@ -118,7 +118,6 @@ class Ui_MainMenu(object):
         self.statusbar = QtGui.QStatusBar(MainMenu)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainMenu.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainMenu)
         QtCore.QMetaObject.connectSlotsByName(MainMenu)
 
