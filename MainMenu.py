@@ -76,6 +76,10 @@ class MyDialog(QtGui.QDialog):
         headerNames.append("diagnosis")
         headerNames.append("weight")
         self.model.setHorizontalHeaderLabels(headerNames)
+        i=0
+        for j in range (0,20):
+            item = QStandardItem(patient)
+            self.model.setItem(i, j, item)
         self.view.setModel(self.model)
 
 
