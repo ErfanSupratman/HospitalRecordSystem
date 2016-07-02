@@ -1,4 +1,5 @@
 from peewee import *
+import datetime
 
 #setting DB connection
 db = MySQLDatabase('hospitalDB', user='test', password="test", host="localhost")
@@ -31,7 +32,7 @@ class PatData(BaseModel):
 	class Meta:
 		primary_key = CompositeKey('regnNo','currentUnixTime')
 	regnNo = ForeignKeyField(PatTable, related_name = 'visits')
-	currentUnixTime = BigIntegerField()
+	currentUnixTime = DateTimeField(default=datetime.datetime.now)
 	nextDateOfVisit = DateField()
 	bloodPressure = CharField(max_length=5)
 	pulseRate = CharField(max_length=5)
@@ -45,7 +46,7 @@ class TestData(BaseModel):
 	class Meta:
 		primary_key = CompositeKey('regnNo','currentUnixTime')
 	regnNo = ForeignKeyField(PatTable, related_name = 'tests')
-	currentUnixTime = BigIntegerField()
+	currentUnixTime = DateTimeField(default=datetime.datetime.now)
 	testName = CharField(max_length=50)
 	testResult = CharField(max_length=100)
 			

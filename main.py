@@ -2,6 +2,8 @@
 
 from PyQt4 import QtGui,QtCore,QtSql
 import sys
+import time
+import datetime
 import PatientEntryForm
 from PatientEntryForm import Ui_PatientEntryForm
 import PatientDataForm
@@ -10,7 +12,7 @@ import PatientTestDataForm
 from PatientTestDataForm import Ui_PatientTestDataForm
 import MainMenu
 from MainMenu import Ui_MainMenu
-from PattableQueries import insertPatientDetails,writeRawQuery
+from PattableQueries import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
 i=0
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -164,6 +166,7 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
     def addData(self):
         inputsData = {      
         'RegNo' : self.plainTextEdit.toPlainText(),
+        #'currentUnixTime' is added by default using the datetime object's function 
         'NextDateOfVisit' : self.dateEdit.date(),
         'BloodPressure' : self.plainTextEdit_3.toPlainText(),
         'PulseRate': self.plainTextEdit_4.toPlainText(),
@@ -172,12 +175,7 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
         'Diagnosis' : self.plainTextEdit_7.toPlainText(),
         'Weight' : self.plainTextEdit_8.toPlainText()
         }
-        #set it to another function here instead of insertPatient
-        insertPatient(inputsData['RegNo'],inputsData['DOB'].day(),inputsData['DOB'].month(),inputsData['DOB'].year(),inputsData['BloodPressure'],
-        inputsData['PulseRate'],inputsData['BodyTemperature'],
-        inputsData['Bmi'],inputsData['Diagnosis'],inputsData['Weight'])
-        
-        #print "Record Inserted!"
+        insertPatientData(inputsData)
         
         msgData = QMessageBox()
         msgData.setIcon(QMessageBox.Information)
@@ -195,13 +193,13 @@ class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataF
         self.pushButton.clicked.connect(self.addTestData)
 
     def addTestData(self):
-        inputsTestData = {      
+        inputsData = {      
         'RegNo' : self.plainTextEdit.toPlainText(),
-        'TestName' : self.dateEdit.date(),
+        'TestName' : self.plainTextEdit_2.toPlainText(),
         'TestResult' : self.plainTextEdit_3.toPlainText()
         }
         #set it to another function here instead of insertPatient
-        insertPatient(inputsTestData['RegNo'],inputsTestData['TestName'],inputsTestData['TestResult'])
+        insertTestData(inputsData)
         
         #print "Record Inserted!"
         
