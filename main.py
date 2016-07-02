@@ -10,7 +10,7 @@ import PatientTestDataForm
 from PatientTestDataForm import Ui_PatientTestDataForm
 import MainMenu
 from MainMenu import Ui_MainMenu
-from PattableQueries import insertPatient,writeRawQuery
+from PattableQueries import insertPatientDetails,writeRawQuery
 i=0
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -19,7 +19,7 @@ from peewee import *
 
 #function to increment regno in the PatTable
 def regno():
-  db = MySQLDatabase('hospitalDB', user='root', password="aergia13", host="localhost")
+  db = MySQLDatabase('hospitalDB', user='test', password="test", host="localhost")
   db.connect()
   count = PatTable.select().count()
   db.close()
@@ -119,7 +119,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         #   m = writeRawQuery('SELECT count(*) from pattable')
         inputs = {      
             'Name' : self.plainTextEdit.toPlainText(),
-            #'RegnNo' : regno(),
+                'RegnNo' : regno(),
                 'Address' : self.plainTextEdit_2.toPlainText(),
                 'Age' : self.plainTextEdit_3.toPlainText(),
                 'Phone': self.plainTextEdit_4.toPlainText(),
@@ -139,7 +139,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         else :
             inputs['Sex'] = 'Female'
         #print inputs['Sex']
-        insertPatient(inputs['Name'],inputs['Address'],inputs['Age'],inputs['DOB'].day(),inputs['DOB'].month(),inputs['DOB'].year(),inputs['Sex'],
+        insertPatientDetails(inputs['Name'],inputs['Address'],inputs['Age'],inputs['DOB'].day(),inputs['DOB'].month(),inputs['DOB'].year(),inputs['Sex'],
         inputs['Phone'],inputs['Alias'],inputs['RegnNo'],inputs['Occupation'],inputs['ConName'],inputs['ConAddr'],inputs['ConPhone'],inputs['IDNo'],
         inputs['ConRelation'])
         
