@@ -119,7 +119,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
 
     def addRecord(self):
         #   m = writeRawQuery('SELECT count(*) from pattable')
-        inputs = {      
+        inputsData = {      
             'Name' : self.plainTextEdit.toPlainText(),
                 'RegnNo' : regno(),
                 'Address' : self.plainTextEdit_2.toPlainText(),
@@ -135,18 +135,14 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
                 'DOB' : self.dateEdit.date(),
                 'SexMale' : self.radio1.isChecked(),
                 'SexFemale' : self.radio2.isChecked()
-            }   
-        if inputs['SexMale'] :
-            inputs['Sex'] = 'Male'
+            }    
+        if inputsData['SexMale'] :
+            inputsData['Sex'] = 'M'
         else :
-            inputs['Sex'] = 'Female'
-        #print inputs['Sex']
-        insertPatientDetails(inputs['Name'],inputs['Address'],inputs['Age'],inputs['DOB'].day(),inputs['DOB'].month(),inputs['DOB'].year(),inputs['Sex'],
-        inputs['Phone'],inputs['Alias'],inputs['RegnNo'],inputs['Occupation'],inputs['ConName'],inputs['ConAddr'],inputs['ConPhone'],inputs['IDNo'],
-        inputs['ConRelation'])
-        
-            #print "Record Inserted!"
-        
+            inputsData['Sex'] = 'F'
+        print inputsData['DOB']
+        insertPatientDetails(inputsData)
+    
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
 
@@ -175,6 +171,7 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
         'Diagnosis' : self.plainTextEdit_7.toPlainText(),
         'Weight' : self.plainTextEdit_8.toPlainText()
         }
+    
         insertPatientData(inputsData)
         
         msgData = QMessageBox()
