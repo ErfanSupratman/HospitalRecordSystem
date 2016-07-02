@@ -3,9 +3,11 @@
 from PyQt4 import QtGui,QtCore,QtSql
 import sys
 import PatientEntryForm
+from PatientEntryForm import Ui_PatientEntryForm
 import PatientDataForm
 from PatientDataForm import Ui_PatientDataForm
-from PatientEntryForm import Ui_PatientEntryForm
+import PatientTestDataForm
+from PatientTestDataForm import Ui_PatientTestDataForm
 import MainMenu
 from MainMenu import Ui_MainMenu
 from PattableQueries import insertPatient,writeRawQuery
@@ -147,7 +149,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         retval = msg.exec_()
     
     
-
+#class for adding patient data
 class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
     def __init__(self, parent=None):
         super(PatientDataAdder, self).__init__(parent)
@@ -180,17 +182,46 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
         msgData.setStandardButtons(QMessageBox.Ok)
         retval = msgData.exec_()    
 
+#class for adding patient result data
+class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataForm):
+    def __init__(self, parent=None):
+        super(PatientTestDataAdder, self).__init__(parent)
+        self.setupUi(self)
+        self.pushButton.clicked.connect(self.addTestData)
+
+    def addTestData(self):
+        inputsTestData = {      
+        'RegNo' : self.plainTextEdit.toPlainText(),
+        'TestName' : self.dateEdit.date(),
+        'TestResult' : self.plainTextEdit_3.toPlainText()
+        }
+        #set it to another function here instead of insertPatient
+        insertPatient(inputsTestData['RegNo'],inputsTestData['TestName'],inputsTestData['TestResult'])
+        
+        #print "Record Inserted!"
+        
+        msgData = QMessageBox()
+        msgData.setIcon(QMessageBox.Information)
+
+        msgData.setText("Record has been inserted!")
+        msgData.setWindowTitle("Record Added")
+        msgData.setStandardButtons(QMessageBox.Ok)
+        retval = msgData.exec_()    
+
+
+
+
 class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
     def __init__(self, parent=None):
         super(HospitalDatabase, self).__init__(parent)
         #self.Stack = QStackedWidget(self)
         self.setupUi(self)
         self.pushButton.clicked.connect(self.addTheRecord)
-        self.pushButton_4.clicked.connect(self.addThePatientData)
-        #self.pushButton_5.clicked.connect(self.addThePatientTestData)
         self.getRecord = Adder(self)
+        self.pushButton_4.clicked.connect(self.addThePatientData)
         self.getPatientData = PatientDataAdder(self)
-        #self.getPatientTestData = PatientTestDataAdder(self)
+        self.pushButton_5.clicked.connect(self.addThePatientTestData)
+        self.getPatientTestData = PatientTestDataAdder(self)
         self.pushButton_3.clicked.connect(self.writeQuery)
        
     @QtCore.pyqtSlot()
@@ -199,6 +230,9 @@ class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
     @QtCore.pyqtSlot()
     def addThePatientData(self):
     	print self.getPatientData.exec_()
+    @QtCore.pyqtSlot()
+    def addThePatientTestData(self):
+    	print self.getPatientTestData.exec_()
     
     @QtCore.pyqtSlot()  
     def writeQuery(self):
