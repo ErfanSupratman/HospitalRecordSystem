@@ -103,14 +103,24 @@ class Ui_MainMenu(object):
         self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("yikg7d5eT.png")))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(50, 490, 131, 41))
+        self.pushButton.setGeometry(QtCore.QRect(20, 490, 131, 41))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        
         self.pushButton_2 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(330, 490, 121, 41))
+        self.pushButton_2.setGeometry(QtCore.QRect(180, 490, 121, 41))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.pushButton_3 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(610, 490, 111, 41))
+        self.pushButton_3.setGeometry(QtCore.QRect(340, 490, 111, 41))
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+
+        self.pushButton_4 = QtGui.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(500, 490, 111, 41))
+        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+
+        self.pushButton_5 = QtGui.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(650, 490, 111, 41))
+        self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
+
         self.label_3 = QtGui.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(200, 390, 471, 61))
         font = QtGui.QFont()
@@ -135,13 +145,20 @@ class Ui_MainMenu(object):
     def retranslateUi(self, MainMenu):
         MainMenu.setWindowTitle(_translate("MainMenu", "Main Menu", None))
         self.label.setText(_translate("MainMenu", "WELCOME TO MANAPPARAI GENERAL HOSPITAL!", None))
-        self.pushButton.setText(_translate("MainMenu", "New Record", None))
+        self.pushButton.setText(_translate("MainMenu", "New Patient Record", None))
+
         self.pushButton_2.setText(_translate("MainMenu", "View Records", None))
         self.pushButton_2.clicked.connect(self.on_pushButton_click)
+
+        self.pushButton_3.setText(_translate("MainMenu", "Insert Query", None))
+        self.label_3.setText(_translate("MainMenu", "Saving Lives. Every Day. Every Minute.", None))
+        
+
+        self.pushButton_4.setText(_translate("MainMenu", "Patient Data", None))
+        self.pushButton_5.setText(_translate("MainMenu", "Patient Test Data", None))
         self.dialogTextBrowser = MyDialog(self)
     
     def on_pushButton_click(self):
         self.dialogTextBrowser.exec_()
-        self.pushButton_3.setText(_translate("MainMenu", "Insert Query", None))
-        self.label_3.setText(_translate("MainMenu", "Saving Lives. Every Day. Every Minute.", None))
+
 
