@@ -119,7 +119,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         #   m = writeRawQuery('SELECT count(*) from pattable')
         inputs = {      
             'Name' : self.plainTextEdit.toPlainText(),
-            'RegnNo' : regno(),
+            #'RegnNo' : regno(),
                 'Address' : self.plainTextEdit_2.toPlainText(),
                 'Age' : self.plainTextEdit_3.toPlainText(),
                 'Phone': self.plainTextEdit_4.toPlainText(),
@@ -131,9 +131,14 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
                 'IDNo' : self.plainTextEdit_10.toPlainText(),
                 'ConRelation' : self.plainTextEdit_11.toPlainText(),
                 'DOB' : self.dateEdit.date(),
-                'Sex' : self.Sex.value()
+                'SexMale' : self.radio1.isChecked(),
+                'SexFemale' : self.radio2.isChecked()
             }   
-        
+        if inputs['SexMale'] :
+            inputs['Sex'] = 'Male'
+        else :
+            inputs['Sex'] = 'Female'
+        #print inputs['Sex']
         insertPatient(inputs['Name'],inputs['Address'],inputs['Age'],inputs['DOB'].day(),inputs['DOB'].month(),inputs['DOB'].year(),inputs['Sex'],
         inputs['Phone'],inputs['Alias'],inputs['RegnNo'],inputs['Occupation'],inputs['ConName'],inputs['ConAddr'],inputs['ConPhone'],inputs['IDNo'],
         inputs['ConRelation'])
