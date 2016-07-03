@@ -57,7 +57,7 @@ def insertTestData(inputsData):
 								  testResult=inputsData['TestResult']
 								 )
 	insertRecord.save()
->>>>>>> 04aa370176b5d9400c0545015d40ae09d75a6161
+
 #view
 def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
 	startDate = date(sy,sm,sd)
