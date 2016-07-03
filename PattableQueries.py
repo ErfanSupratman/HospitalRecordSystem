@@ -1,6 +1,6 @@
 import peewee
 import sqlite3
-from Hospital_Database import PatTable,PatData,TestData
+from Hospital_Database import PatTable,PatData
 from datetime import date
 
 
@@ -9,43 +9,10 @@ Insert commands for the following tables  - PatTable (patient details)
 											PatData  (patient data)
 '''
 def insertPatientDetails(name,addr,age,D,M,Y,sex,phoneNo,alias,regnNo,occupation,conName,conAddr,conPhone,idNos,conRTP):
-	insertRecord = PatTable.create(
-								   name=name,
-								   addr=addr,
-								   age=age,
-								   dob=date(Y,M,D),
-								   sex=sex,
-								   phoneNo=phoneNo,
-								   alias=alias,
-								   regnNo=regnNo,
-								   occupation=occupation,
-								   conName=conName,
-								   conAddr=conAddr,
-								   conPhone=conPhone,
-								   idNos = idNos,
-								   conRTP = conRTP
-								  )
+	insertRecord = PatTable.create(name=name,addr=addr,age=age,dob=date(Y,M,D),sex=sex,phoneNo=phoneNo,alias=alias,regnNo=regnNo,
+	occupation=occupation,conName=conName,conAddr=conAddr,conPhone=conPhone,idNos = idNos,conRTP = conRTP)
 	insertRecord.save()
 
-
-def insertPatientData(inputsData):
-	insertRecord = PatData.create(
-								  regnNo=inputsData['RegNo'],
-								  #currentUnixTime=inputsData['currentUnixTime'],
-								  nextDateOfVisit=inputsData['NextDateOfVisit'],
-								  bloodPressure=inputsData['BloodPressure'],
-								  pulseRate=inputsData['PulseRate'],
-								  bodyTemperature=inputsData['BodyTemperature'],
-								  bmi=inputsData['Bmi'],
-								  diagnosis=inputsData['Diagnosis'],
-								  weight=inputsData['Weight']
-								 )
-def insertTestData(inputsData):
-	insertRecord = TestData.create(
-								  regnNo=inputsData['RegNo'],
-								  testName=inputsData['TestName'],
-								  testResult=inputsData['TestResult']
-								 )
 #view
 def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
 	startDate = date(sy,sm,sd)
