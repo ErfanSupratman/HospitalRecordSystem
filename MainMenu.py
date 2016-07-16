@@ -30,58 +30,65 @@ class MyDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(MyDialog, self).__init__(parent)
 
-        self.setGeometry(300, 300, 2000, 150)
+        self.setGeometry(300, 300, 700, 700)
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("View")
-        self.btn_query.clicked.connect(self.queryProcess)
-        
         self.model = QStandardItemModel()
-        self.view = QTableView()
-        
+        self.view = QListWidget()
+
+
+        '''self.label = QtGui.QLabel()
+        self.label.setGeometry(QtCore.QRect(20, 90, 111, 21))
+        self.label.setText("Reg No:")'''
+        self.btn_query.clicked.connect(self.queryProcess)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.addWidget(self.sql_query)
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
-
     def queryProcess(self):
         self.model.clear()
-        #list = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
+        #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
-        patient = getPatientRecord(RegistrationNo)
-        print patient
+        #patient = getPatientRecord(RegistrationNo)
+        #print patient
         #print patient.name
         #print "Hi"
+        name = "test"
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
-        self.model.setColumnCount(13)
         headerNames=[]
-        headerNames.append("Registration No.")
-        headerNames.append("Name")
-        headerNames.append("Address")
-        headerNames.append("Age")
-        headerNames.append("DOB")
-        headerNames.append("Sex")
-        headerNames.append("Phone")
-        headerNames.append("Alias")
-        headerNames.append("Occupation")
-        headerNames.append("Con Name")
-        headerNames.append("Con Address")
-        headerNames.append("Con Phone")
-        headerNames.append("ID No")
-        headerNames.append("nextDateOfVisit")
-        headerNames.append("bloodPressure")
-        headerNames.append("pulseRate")
-        headerNames.append("bodyTemperature")
-        headerNames.append("bmi")
-        headerNames.append("diagnosis")
-        headerNames.append("weight")
-        self.model.setHorizontalHeaderLabels(headerNames)
-        i=0
+        self.model.setColumnCount(13)
+        headerNames.append("Registration No.\t" + name)
+        headerNames.append("Name\t\t" + name)
+        headerNames.append("Address\t\t" + name)
+        headerNames.append("Age\t\t" + name)
+        headerNames.append("DOB\t\t" + name)
+        headerNames.append("Sex\t\t" + name)
+        headerNames.append("Phone\t\t" + name)
+        headerNames.append("Alias\t\t" + name)
+        headerNames.append("Occupation\t\t" + name)
+        headerNames.append("Con Name\t\t" + name)
+        headerNames.append("Con Address\t\t" + name)
+        headerNames.append("Con Phone\t\t" + name)
+        headerNames.append("ID No\t\t" + name)
+        headerNames.append("nextDateOfVisit\t" + name)
+        headerNames.append("bloodPressure\t\t" + name)
+        headerNames.append("pulseRate\t\t" + name)
+        headerNames.append("bodyTemperature\t" + name)
+        headerNames.append("bmi\t\t" + name)
+        headerNames.append("diagnosis\t\t" + name)
+        headerNames.append("weight\t\t" + name)
+        #self.model.setHorizontalHeaderLabels(headerNames)
+        '''i=0
         for j in range (0,20):
-            item = QStandardItem(patient)
+            item = QStandardItem(lists[j])
             self.model.setItem(i, j, item)
         self.view.setModel(self.model)
-
+        self.label = QtGui.QLabel(self)
+        self.label.setGeometry(QtCore.QRect(390, 400, 111, 21))
+        print "ok"
+        self.label.setText("Reg No:")'''
+        self.view.addItems(headerNames)
 
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
