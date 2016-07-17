@@ -1,6 +1,6 @@
 import peewee
 import sqlite3
-from Hospital_Database import PatTable,PatData
+from Hospital_Database import PatTable,PatData,TestData
 from datetime import date
 
 
@@ -54,6 +54,7 @@ def insertTestData(inputsData):
 	insertRecord = TestData.create(
 								  regnNo=inputsData['RegNo'],
 								  testName=inputsData['TestName'],
+								  testDate =date.today(),
 								  testResult=inputsData['TestResult']
 								 )
 	insertRecord.save()
@@ -87,25 +88,48 @@ def writeRawQuery(query):
 #		print type(j)
 
 def getPatientRecord(regnNo):
-	patTableDetails = PatTable.get(regnNo = regnNo)
-	patDataDetails = PatData.get(regnNo = regnNo)
-	patientDetails = [	patTableDetails.regnNo,
-						patTableDetails.name,
-						patTableDetails.addr,
-						patTableDetails.age,
-						patTableDetails.dob,
-						patTableDetails.sex,
-						patTableDetails.phoneNo,
-						patTableDetails.alias,
-						patTableDetails.occupation,
-						patTableDetails.conName,
-						patTableDetails.conAddr,
-						patTableDetails.conPhone,
-						patTableDetails.idNos,
-						patDataDetails.nextDateOfVisit,
-						patDataDetails.pulseRate,
-						patDataDetails.bodyTemperature,
-						patDataDetails.bmi,
-						patDataDetails.diagnosis,
-						patDataDetails.weight ]
-	return patientDetails
+	patTableDetails = PatTable.select().where(PatTable.regnNo == regnNo)
+	if patTableDetails.exists():
+		patTableDetails = PatTable.get(regnNo = regnNo)
+	else:
+		return 0;
+	patDataDetails = PatData.select().where(PatData.regnNo == regnNo)
+	if patDataDetails.exists():
+		patDataDetails = PatData.get(regnNo = regnNo)
+		patientDetails = {	
+						'regnNo' : patTableDetails.regnNo,
+						'name' :  patTableDetails.name,
+						'addr' : patTableDetails.addr,
+						'age' : patTableDetails.age,
+						'dob' : patTableDetails.dob,
+						'sex' : patTableDetails.sex,
+						'phoneNo' : patTableDetails.phoneNo,
+						'alias' :patTableDetails.alias,
+						'occupation' : patTableDetails.occupation,
+						'conName' : patTableDetails.conName,
+						'conAddr' : patTableDetails.conAddr,
+						'conPhone' : patTableDetails.conPhone,
+						'idNos' : patTableDetails.idNos,
+						'nextDateOfVisit' : patDataDetails.nextDateOfVisit,
+						'bloodPressure' : patDataDetails.bloodPressure,
+						'pulseRate' : patDataDetails.pulseRate,
+						'bodyTemperature' : patDataDetails.bodyTemperature,
+						'bmi' : patDataDetails.bmi,
+						'diagnosis' : patDataDetails.diagnosis,
+						'weight' : patDataDetails.weight 
+						}
+		return patientDetails
+	else:
+		return 0
+
+def getPatientTest(regnNo,dateOfVisit=0):
+	testDataDetails = 'lol'
+	if dateOfVisit != 0:
+		testDataDetails = TestData.select().where(
+												  TestData.regnNo == regnNo,
+									   			  TestData.testDate == dateOfVisit
+									   			  )
+	else:
+		testDataDetails = TestData.select().where(TestData.regnNo == regnNo)
+	return testDataDetails
+	

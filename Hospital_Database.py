@@ -47,6 +47,7 @@ class TestData(BaseModel):
 		primary_key = CompositeKey('regnNo','currentUnixTime')
 	regnNo = ForeignKeyField(PatTable, related_name = 'tests')
 	currentUnixTime = DateTimeField(default=datetime.datetime.now)
+	testDate = DateField()
 	testName = CharField(max_length=50)
 	testResult = CharField(max_length=100)
 			

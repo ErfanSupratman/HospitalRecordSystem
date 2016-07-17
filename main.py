@@ -119,9 +119,10 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
 
     def addRecord(self):
         #   m = writeRawQuery('SELECT count(*) from pattable')
+        regNumber = regno()
         inputsData = {      
             'Name' : self.plainTextEdit.toPlainText(),
-                'RegnNo' : regno(),
+                'RegnNo' : regNumber,
                 'Address' : self.plainTextEdit_2.toPlainText(),
                 'Age' : self.plainTextEdit_3.toPlainText(),
                 'Phone': self.plainTextEdit_4.toPlainText(),
@@ -140,13 +141,12 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
-        print inputsData['DOB']
         insertPatientDetails(inputsData)
     
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
 
-        msg.setText("Record has been inserted!")
+        msg.setText("Record has been inserted!\n You Registration number is : "+str(regNumber))
         msg.setWindowTitle("Record Added")
         msg.setStandardButtons(QMessageBox.Ok)
         retval = msg.exec_()
