@@ -11,7 +11,7 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PattableQueries import getPatientRecord
-from datetime import date
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -30,7 +30,8 @@ except AttributeError:
 class viewPatData(QtGui.QDialog):
     def __init__(self, parent=None):
         super(viewPatData, self).__init__(parent)
-
+        
+        self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
         self.label.setText("Enter Reg No:")
@@ -39,12 +40,12 @@ class viewPatData(QtGui.QDialog):
         #self.sql_query.setPlaceholderText("Enter Reg No here")
         self.label2 = QtGui.QLabel(self)
         self.label2.setText("Enter Date:")
-        self.dateEdit = QtGui.QDateEdit(None)
+        self.dateEdit = QtGui.QDateEdit()
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
 
-        #self.btn_query.clicked.connect(self.viewData)
+        self.btn_query.clicked.connect(self.viewData)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.addWidget(self.label)
         self.verticalLayout.addWidget(self.sql_query)
@@ -53,23 +54,27 @@ class viewPatData(QtGui.QDialog):
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
 
+    def viewData(self):
+        RegistrationNo = str(self.sql_query.text())
+        print "Working"
+
 
 class MyDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(MyDialog, self).__init__(parent)
 
+        self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
+        self.label = QtGui.QLabel(self)
+        self.label.setText("Enter Registration Number :")
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
 
-
-        '''self.label = QtGui.QLabel()
-        self.label.setGeometry(QtCore.QRect(20, 90, 111, 21))
-        self.label.setText("Reg No:")'''
         self.btn_query.clicked.connect(self.queryProcess)
         self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.verticalLayout.addWidget(self.label)
         self.verticalLayout.addWidget(self.sql_query)
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
