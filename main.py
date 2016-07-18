@@ -1,49 +1,47 @@
 #!/usr/bin/python
 
-from PyQt4 import QtGui,QtCore,QtSql
 import sys
 import time
 import datetime
 import PatientEntryForm
-from PatientEntryForm import Ui_PatientEntryForm
 import PatientDataForm
-from PatientDataForm import Ui_PatientDataForm
 import PatientTestDataForm
-from PatientTestDataForm import Ui_PatientTestDataForm
 import MainMenu
+
+from PyQt4 import QtGui,QtCore,QtSql
+from PatientEntryForm import Ui_PatientEntryForm
+from PatientDataForm import Ui_PatientDataForm
+from PatientTestDataForm import Ui_PatientTestDataForm
 from MainMenu import Ui_MainMenu
 from PattableQueries import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
-i=0
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from Hospital_Database import PatTable
 from peewee import *
 
+
 #function to increment regno in the PatTable
 def regno():
-  db = MySQLDatabase('hospitalDB', user='test', password="test", host="localhost")
-  db.connect()
-  count = PatTable.select().count()
-  db.close()
-  return count+1;
+    db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+    db.connect()
+    count = PatTable.select().count()
+    db.close()
+    return count+1;
+
 
 class Queryer(QWidget):
+
     def __init__(self):
         super(Queryer, self).__init__()
         self.leftlist = QListWidget ()
         self.leftlist.insertItem (1, 'Write Query' )
-      
         self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
         self.model = QStandardItemModel()
         self.view = QTableView()
-            
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("Query")
-      
         self.stack2 = QWidget()
-                
         self.stack2UI()
-                
         self.Stack = QStackedWidget (self)
         self.Stack.addWidget (self.stack2)
                 
@@ -57,30 +55,19 @@ class Queryer(QWidget):
         self.setWindowTitle('Database Query')
         self.show()
       
+
     def queryProcess(self):
     #try:
         self.model.clear()
-        list = []
-        list = writeRawQuery(str(self.sql_query.text()))
+        queryList = []
+        queryList = writeRawQuery(str(self.sql_query.text()))
         self.model.setColumnCount(13)
-        headerNames=[]
-        headerNames.append("Registration No.")
-        headerNames.append("Name")
-        headerNames.append("Address")
-        headerNames.append("Age")
-        headerNames.append("DOB")
-        headerNames.append("Sex")
-        headerNames.append("Phone")
-        headerNames.append("Alias")
+        headerNames=["Registration No.", "Name", "Address", "Age", "DOB", "Sex", "Phone",
+        "Alias", "Occupation", "Con Name", "Con Address", "Con Phone", "ID No"]
         #headerNames.append("RegnNo")
-        headerNames.append("Occupation")
-        headerNames.append("Con Name")
-        headerNames.append("Con Address")
-        headerNames.append("Con Phone")
-        headerNames.append("ID No")
         self.model.setHorizontalHeaderLabels(headerNames)
         
-        for d in list:
+        for d in queryList:
             row=[]
             for name in d:
                 try:
@@ -93,13 +80,10 @@ class Queryer(QWidget):
             self.model.appendRow(row)
         
         self.view.setModel(self.model)
-        
-        
         #except:
         #   print "Nope. Not Working bruh.."
-            
-   
-        
+
+
     def stack2UI(self):
         layout = QVBoxLayout()
       
@@ -117,35 +101,36 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         self.setupUi(self)
         self.pushButton.clicked.connect(self.addRecord)
 
+
     def addRecord(self):
         #   m = writeRawQuery('SELECT count(*) from pattable')
         regNumber = regno()
         inputsData = {      
             'Name' : self.plainTextEdit.toPlainText(),
-                'RegnNo' : regNumber,
-                'Address' : self.plainTextEdit_2.toPlainText(),
-                'Age' : self.plainTextEdit_3.toPlainText(),
-                'Phone': self.plainTextEdit_4.toPlainText(),
-                'Alias' : self.plainTextEdit_5.toPlainText(),
-                'Occupation' : self.plainTextEdit_6.toPlainText(),
-                'ConName' : self.plainTextEdit_7.toPlainText(),
-                'ConAddr' : self.plainTextEdit_8.toPlainText(),
-                'ConPhone' : self.plainTextEdit_9.toPlainText(),
-                'IDNo' : self.plainTextEdit_10.toPlainText(),
-                'ConRelation' : self.plainTextEdit_11.toPlainText(),
-                'DOB' : self.dateEdit.date(),
-                'SexMale' : self.radio1.isChecked(),
-                'SexFemale' : self.radio2.isChecked()
-            }    
+            'RegnNo' : regNumber,
+            'Address' : self.plainTextEdit_2.toPlainText(),
+            'Age' : self.plainTextEdit_3.toPlainText(),
+            'Phone': self.plainTextEdit_4.toPlainText(),
+            'Alias' : self.plainTextEdit_5.toPlainText(),
+            'Occupation' : self.plainTextEdit_6.toPlainText(),
+            'ConName' : self.plainTextEdit_7.toPlainText(),
+            'ConAddr' : self.plainTextEdit_8.toPlainText(),
+            'ConPhone' : self.plainTextEdit_9.toPlainText(),
+            'IDNo' : self.plainTextEdit_10.toPlainText(),
+            'ConRelation' : self.plainTextEdit_11.toPlainText(),
+            'DOB' : self.dateEdit.date(),
+            'SexMale' : self.radio1.isChecked(),
+            'SexFemale' : self.radio2.isChecked()
+        }
+
         if inputsData['SexMale'] :
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
+
         insertPatientDetails(inputsData)
-    
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-
         msg.setText("Record has been inserted!\n You Registration number is : "+str(regNumber))
         msg.setWindowTitle("Record Added")
         msg.setStandardButtons(QMessageBox.Ok)
@@ -154,46 +139,50 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
     
 #class for adding patient data
 class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
+
     def __init__(self, parent=None):
         super(PatientDataAdder, self).__init__(parent)
         self.setupUi(self)
         self.pushButton.clicked.connect(self.addData)
 
+
     def addData(self):
         inputsData = {      
-        'RegNo' : self.plainTextEdit.toPlainText(),
-        #'currentUnixTime' is added by default using the datetime object's function 
-        'NextDateOfVisit' : self.dateEdit.date(),
-        'BloodPressure' : self.plainTextEdit_3.toPlainText(),
-        'PulseRate': self.plainTextEdit_4.toPlainText(),
-        'BodyTemperature' : self.plainTextEdit_5.toPlainText(),
-        'Bmi' : self.plainTextEdit_6.toPlainText(),
-        'Diagnosis' : self.plainTextEdit_7.toPlainText(),
-        'Weight' : self.plainTextEdit_8.toPlainText()
+            'RegNo' : self.plainTextEdit.toPlainText(),
+            #'currentUnixTime' is added by default using the datetime object's function 
+            'NextDateOfVisit' : self.dateEdit.date(),
+            'BloodPressure' : self.plainTextEdit_3.toPlainText(),
+            'PulseRate': self.plainTextEdit_4.toPlainText(),
+            'BodyTemperature' : self.plainTextEdit_5.toPlainText(),
+            'Bmi' : self.plainTextEdit_6.toPlainText(),
+            'Diagnosis' : self.plainTextEdit_7.toPlainText(),
+            'Weight' : self.plainTextEdit_8.toPlainText()
         }
     
         insertPatientData(inputsData)
         
         msgData = QMessageBox()
         msgData.setIcon(QMessageBox.Information)
-
         msgData.setText("Record has been inserted!")
         msgData.setWindowTitle("Record Added")
         msgData.setStandardButtons(QMessageBox.Ok)
         retval = msgData.exec_()    
 
+
 #class for adding patient result data
 class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataForm):
+
     def __init__(self, parent=None):
         super(PatientTestDataAdder, self).__init__(parent)
         self.setupUi(self)
         self.pushButton.clicked.connect(self.addTestData)
 
+
     def addTestData(self):
         inputsData = {      
-        'RegNo' : self.plainTextEdit.toPlainText(),
-        'TestName' : self.plainTextEdit_2.toPlainText(),
-        'TestResult' : self.plainTextEdit_3.toPlainText()
+            'RegNo' : self.plainTextEdit.toPlainText(),
+            'TestName' : self.plainTextEdit_2.toPlainText(),
+            'TestResult' : self.plainTextEdit_3.toPlainText()
         }
         #set it to another function here instead of insertPatient
         insertTestData(inputsData)
@@ -209,9 +198,8 @@ class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataF
         retval = msgData.exec_()    
 
 
-
-
 class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
+
     def __init__(self, parent=None):
         super(HospitalDatabase, self).__init__(parent)
         #self.Stack = QStackedWidget(self)
@@ -223,23 +211,30 @@ class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
         self.pushButton_5.clicked.connect(self.addThePatientTestData)
         self.getPatientTestData = PatientTestDataAdder(self)
         self.pushButton_3.clicked.connect(self.writeQuery)
-       
+
+
     @QtCore.pyqtSlot()
     def addTheRecord(self):
-    	print self.getRecord.exec_()
+        print self.getRecord.exec_()
+
+
     @QtCore.pyqtSlot()
     def addThePatientData(self):
-    	print self.getPatientData.exec_()
+        print self.getPatientData.exec_()
+
+
     @QtCore.pyqtSlot()
     def addThePatientTestData(self):
-    	print self.getPatientTestData.exec_()
+        print self.getPatientTestData.exec_()
     
+
     @QtCore.pyqtSlot()  
     def writeQuery(self):
-    	#print "Hi"
+        #print "Hi"
         self.getQuery = Queryer()
-    	#print self.getQuery.exec_()
-        
+        #print self.getQuery.exec_()
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
     form = HospitalDatabase()

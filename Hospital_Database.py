@@ -2,16 +2,20 @@ from peewee import *
 import datetime
 
 #setting DB connection
-db = MySQLDatabase('hospitalDB', user='test', password="test", host="localhost")
+db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+
 
 #base model for meta data of the tables
 class BaseModel(Model):
+
 	class Meta:
 		database = db
+
 
 #all tables derive from the BaseModel for the meta data
 #patients table
 class PatTable(BaseModel):
+
 	name = CharField(max_length=60)
 	addr = CharField(max_length=200)
 	age = IntegerField(null=True)
@@ -27,10 +31,13 @@ class PatTable(BaseModel):
 	idNos = CharField(max_length=50)
 	ConRTP = CharField(max_length=12,null=True)
 
+
 #patient data
 class PatData(BaseModel):
+
 	class Meta:
 		primary_key = CompositeKey('regnNo','currentUnixTime')
+
 	regnNo = ForeignKeyField(PatTable, related_name = 'visits')
 	currentUnixTime = DateTimeField(default=datetime.datetime.now)
 	nextDateOfVisit = DateField()
@@ -43,8 +50,10 @@ class PatData(BaseModel):
 
 
 class TestData(BaseModel):
+
 	class Meta:
 		primary_key = CompositeKey('regnNo','currentUnixTime')
+
 	regnNo = ForeignKeyField(PatTable, related_name = 'tests')
 	currentUnixTime = DateTimeField(default=datetime.datetime.now)
 	testDate = DateField()
@@ -52,7 +61,11 @@ class TestData(BaseModel):
 	testResult = CharField(max_length=100)
 			
 
-if __name__=='__main__':
+def main():
 	db.connect()
 	db.create_tables([PatTable, PatData, TestData],safe=True)
 	db.close()
+
+
+if __name__=='__main__':
+	main()
