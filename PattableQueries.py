@@ -122,14 +122,13 @@ def getPatientRecord(regnNo):
 	else:
 		return 0
 
-def getPatientTest(regnNo,dateOfVisit=0):
-	testDataDetails = 'lol'
-	if dateOfVisit != 0:
+def getPatientTest(regnNo,dateOfVisit):
+	if dateOfVisit != None:
 		testDataDetails = TestData.select().where(
 												  TestData.regnNo == regnNo,
 									   			  TestData.testDate == dateOfVisit
 									   			  )
 	else:
 		testDataDetails = TestData.select().where(TestData.regnNo == regnNo)
-	return testDataDetails
+	print testDataDetails[0].testName
 	

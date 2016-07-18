@@ -11,7 +11,7 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PattableQueries import getPatientRecord
-
+from datetime import date
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -39,7 +39,7 @@ class viewPatData(QtGui.QDialog):
         #self.sql_query.setPlaceholderText("Enter Reg No here")
         self.label2 = QtGui.QLabel(self)
         self.label2.setText("Enter Date:")
-        self.dateEdit = QtGui.QDateEdit()
+        self.dateEdit = QtGui.QDateEdit(None)
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
