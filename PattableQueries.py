@@ -1,5 +1,5 @@
 import peewee
-import sqlite3
+import MySQLdb
 from Hospital_Database import PatTable,PatData,TestData
 from datetime import date
 
@@ -71,15 +71,18 @@ def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
 
 #query
 def writeRawQuery(query):
-	conn = sqlite3.connect('peewee.db')
+	conn = MySQLdb.connect('localhost', 'test', 'test', 'hospitalDB')
 	cursor = conn.cursor()
 	try:
 		cursor.execute(query)
-		return [row for row in cursor.execute(query)]
+		data = [row for row in cursor.fetchall()]
+		# conn.commit() - Uncomment this if data manipulation through raw SQL is allowed
+		conn.close()
+		return data
 	except:
 		conn.close()
 		print "Invalid Data"
-		return "0"
+		return []
 
 #m = writeRawQuery('SELECT * from pattable')
 #for k in m:

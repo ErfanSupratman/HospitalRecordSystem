@@ -31,6 +31,13 @@ def regno():
 
 class Queryer(QWidget):
 
+    #static lists containing column names for patTable and patData
+    patTableHeaderNames=["Registration No.", "Name", "Address", "Age", "DOB", "Sex", "Phone",
+    "Alias", "Occupation", "Con Name", "Con Address", "Con Phone", "ID No", "Con RTP"]
+
+    patDataHeaderNames=["Registration No.", "Unix time", "Next Visit Date", "Blood Pressure", "Pulse Rate",
+    "Body temp.", "BMI", "Diagnosis", "Weight"]
+
     def __init__(self):
         super(Queryer, self).__init__()
         self.leftlist = QListWidget ()
@@ -57,31 +64,34 @@ class Queryer(QWidget):
       
 
     def queryProcess(self):
-    #try:
         self.model.clear()
         queryList = []
         queryList = writeRawQuery(str(self.sql_query.text()))
-        self.model.setColumnCount(13)
-        headerNames=["Registration No.", "Name", "Address", "Age", "DOB", "Sex", "Phone",
-        "Alias", "Occupation", "Con Name", "Con Address", "Con Phone", "ID No"]
-        #headerNames.append("RegnNo")
-        self.model.setHorizontalHeaderLabels(headerNames)
-        
-        for d in queryList:
-            row=[]
-            for name in d:
-                try:
-                    item = QStandardItem(name)
-                    item.setEditable(False)
-                    row.append(item)
-                except:
-                    continue
+
+        if queryList:
+            self.model.setColumnCount(len(queryList[0]))
+
+            if len(queryList[0]) == len(Queryer.patTableHeaderNames):
+                self.model.setHorizontalHeaderLabels(Queryer.patTableHeaderNames)
+            elif len(queryList[0]) == len(Queryer.patDataHeaderNames):
+                self.model.setHorizontalHeaderLabels(Queryer.patDataHeaderNames)
             
-            self.model.appendRow(row)
-        
-        self.view.setModel(self.model)
-        #except:
-        #   print "Nope. Not Working bruh.."
+            for d in queryList:
+                row=[]
+                for name in d:
+                    try:
+                        item = QStandardItem(str(name))
+                        item.setEditable(False)
+                        row.append(item)
+                    except:
+                        continue
+
+                self.model.appendRow(row)
+
+            self.view.setModel(self.model)
+        else:
+            # Empty result set or invalid query. Case has to be handled
+            print "Empty result set or invalid query. Case has to be handled properly"
 
 
     def stack2UI(self):
