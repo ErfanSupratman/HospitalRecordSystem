@@ -26,6 +26,34 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
         
+
+class viewPatData(QtGui.QDialog):
+    def __init__(self, parent=None):
+        super(viewPatData, self).__init__(parent)
+
+        self.setGeometry(300, 300, 700, 700)
+        self.label = QtGui.QLabel(self)
+        self.label.setText("Enter Reg No:")
+        self.sql_query = QLineEdit()
+        #self.clearFocus()
+        #self.sql_query.setPlaceholderText("Enter Reg No here")
+        self.label2 = QtGui.QLabel(self)
+        self.label2.setText("Enter Date:")
+        self.dateEdit = QtGui.QDateEdit()
+        self.btn_query = QPushButton("View")
+        self.model = QStandardItemModel()
+        self.view = QListWidget()
+
+        #self.btn_query.clicked.connect(self.viewData)
+        self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.verticalLayout.addWidget(self.label)
+        self.verticalLayout.addWidget(self.sql_query)
+        self.verticalLayout.addWidget(self.label2)
+        self.verticalLayout.addWidget(self.dateEdit)
+        self.verticalLayout.addWidget(self.btn_query)
+        self.verticalLayout.addWidget(self.view)
+
+
 class MyDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(MyDialog, self).__init__(parent)
@@ -135,6 +163,10 @@ class Ui_MainMenu(object):
         self.pushButton_5.setGeometry(QtCore.QRect(650, 490, 111, 41))
         self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
 
+        self.pushButton_6 = QtGui.QPushButton(self.centralwidget)
+        self.pushButton_6.setGeometry(QtCore.QRect(800, 490, 131, 41))
+        self.pushButton_6.setObjectName(_fromUtf8("pushButton_6"))
+
         self.label_3 = QtGui.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(200, 390, 471, 61))
         font = QtGui.QFont()
@@ -170,9 +202,17 @@ class Ui_MainMenu(object):
 
         self.pushButton_4.setText(_translate("MainMenu", "Patient Data", None))
         self.pushButton_5.setText(_translate("MainMenu", "Patient Test Data", None))
+        self.pushButton_6.setText(_translate("MainMenu", "View Patient Test Data", None))
+        self.pushButton_6.clicked.connect(self.on_pushButton_6_click)
+        self.viewPatDataText = viewPatData(self)
         self.dialogTextBrowser = MyDialog(self)
     
     def on_pushButton_click(self):
         self.dialogTextBrowser.exec_()
+
+    def on_pushButton_6_click(self):
+        self.viewPatDataText.exec_()
+
+
 
 
