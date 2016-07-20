@@ -1,11 +1,11 @@
 #!/usr/bin/python
-
 import sys
 import time
 import datetime
 import PatientEntryForm
 import PatientDataForm
 import PatientTestDataForm
+import FormValidator
 import MainMenu
 
 from PyQt4 import QtGui,QtCore,QtSql
@@ -111,7 +111,6 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
         self.setupUi(self)
         self.pushButton.clicked.connect(self.addRecord)
 
-
     def addRecord(self):
         #   m = writeRawQuery('SELECT count(*) from pattable')
         regNumber = regno()
@@ -137,15 +136,22 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
-
-        insertPatientDetails(inputsData)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Record has been inserted!\n You Registration number is : "+str(regNumber))
-        msg.setWindowTitle("Record Added")
-        msg.setStandardButtons(QMessageBox.Ok)
-        retval = msg.exec_()
-    
+        message = FormValidator.PatEntryFormValidate(inputsData)
+        if message == 1:
+            insertPatientDetails(inputsData)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Record has been inserted!\n You Registration number is : "+str(regNumber))
+            msg.setWindowTitle("Record Added")
+            msg.setStandardButtons(QMessageBox.Ok)
+            retval = msg.exec_()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText('Error! : '+message)
+            msg.setWindowTitle("\nRecord Not Added")
+            msg.setStandardButtons(QMessageBox.Ok)
+            retval = msg.exec_()
     
 #class for adding patient data
 class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
@@ -168,17 +174,22 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
             'Diagnosis' : self.plainTextEdit_7.toPlainText(),
             'Weight' : self.plainTextEdit_8.toPlainText()
         }
-    
-        insertPatientData(inputsData)
-        
-        msgData = QMessageBox()
-        msgData.setIcon(QMessageBox.Information)
-        msgData.setText("Record has been inserted!")
-        msgData.setWindowTitle("Record Added")
-        msgData.setStandardButtons(QMessageBox.Ok)
-        retval = msgData.exec_()    
-
-
+        message = FormValidator.PatDataFormValidate(inputsData) 
+        if message == 1:   
+            insertPatientData(inputsData)
+            msgData = QMessageBox()
+            msgData.setIcon(QMessageBox.Information)
+            msgData.setText("Record has been inserted!")
+            msgData.setWindowTitle("Record Added")
+            msgData.setStandardButtons(QMessageBox.Ok)
+            retval = msgData.exec_()    
+        else:
+            msgData = QMessageBox()
+            msgData.setIcon(QMessageBox.Information)
+            msgData.setText("Error : "+message)
+            msgData.setWindowTitle("\nRecord Not Added")
+            msgData.setStandardButtons(QMessageBox.Ok)
+            retval = msgData.exec_()                
 #class for adding patient result data
 class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataForm):
 
@@ -194,19 +205,22 @@ class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataF
             'TestName' : self.plainTextEdit_2.toPlainText(),
             'TestResult' : self.plainTextEdit_3.toPlainText()
         }
-        #set it to another function here instead of insertPatient
-        insertTestData(inputsData)
-        
-        #print "Record Inserted!"
-        
-        msgData = QMessageBox()
-        msgData.setIcon(QMessageBox.Information)
-
-        msgData.setText("Record has been inserted!")
-        msgData.setWindowTitle("Record Added")
-        msgData.setStandardButtons(QMessageBox.Ok)
-        retval = msgData.exec_()    
-
+        message = FormValidator.PatTestFormValidate(inputsData)
+        if message == 1:
+            insertTestData(inputsData)
+            msgData = QMessageBox()
+            msgData.setIcon(QMessageBox.Information)
+            msgData.setText("Record has been inserted!")
+            msgData.setWindowTitle("Record Added")
+            msgData.setStandardButtons(QMessageBox.Ok)
+            retval = msgData.exec_()    
+        else:
+            msgData = QMessageBox()
+            msgData.setIcon(QMessageBox.Information)
+            msgData.setText("Record has been inserted!")
+            msgData.setWindowTitle("Record Added")
+            msgData.setStandardButtons(QMessageBox.Ok)
+            retval = msgData.exec_()    
 
 class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
 

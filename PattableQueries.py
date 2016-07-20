@@ -2,18 +2,12 @@ import peewee
 import MySQLdb
 from Hospital_Database import PatTable,PatData,TestData
 from datetime import date
-
+from FormValidator import *
 
 '''
 Insert commands for the following tables  - PatTable (patient details)
 											PatData  (patient data)
 '''
-
-def insertPatientDetails(name,addr,age,D,M,Y,sex,phoneNo,alias,regnNo,occupation,conName,conAddr,conPhone,idNos,conRTP):
-	insertRecord = PatTable.create(name=name,addr=addr,age=age,dob=date(Y,M,D),sex=sex,phoneNo=phoneNo,alias=alias,regnNo=regnNo,
-	occupation=occupation,conName=conName,conAddr=conAddr,conPhone=conPhone,idNos = idNos,conRTP = conRTP)
-	insertRecord.save()
-
 
 def insertPatientDetails(inputsData):
 	insertRecord = PatTable.create(
