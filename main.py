@@ -136,8 +136,8 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
-        message = FormValidator.PatEntryFormValidate(inputsData)
-        if message == 1:
+        status,message = FormValidator.PatEntryFormValidate(inputsData)
+        if status == 1:
             insertPatientDetails(inputsData)
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
@@ -174,8 +174,8 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
             'Diagnosis' : self.plainTextEdit_7.toPlainText(),
             'Weight' : self.plainTextEdit_8.toPlainText()
         }
-        message = FormValidator.PatDataFormValidate(inputsData) 
-        if message == 1:   
+        status,message = FormValidator.PatDataFormValidate(inputsData)
+        if status == 1:
             insertPatientData(inputsData)
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
@@ -205,8 +205,8 @@ class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataF
             'TestName' : self.plainTextEdit_2.toPlainText(),
             'TestResult' : self.plainTextEdit_3.toPlainText()
         }
-        message = FormValidator.PatTestFormValidate(inputsData)
-        if message == 1:
+        status,message = FormValidator.PatTestFormValidate(inputsData)
+        if status == 1:
             insertTestData(inputsData)
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
@@ -217,10 +217,10 @@ class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataF
         else:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
-            msgData.setText("Record has been inserted!")
-            msgData.setWindowTitle("Record Added")
+            msgData.setText("Error : "+message)
+            msgData.setWindowTitle("\nRecord Not Added")
             msgData.setStandardButtons(QMessageBox.Ok)
-            retval = msgData.exec_()    
+            retval = msgData.exec_()
 
 class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
 
