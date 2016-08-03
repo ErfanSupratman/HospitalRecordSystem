@@ -92,30 +92,7 @@ def getPatientRecord(regnNo):
 		return 0;
 	patDataDetails = PatData.select().where(PatData.regnNo == regnNo)
 	if patDataDetails.exists():
-		patDataDetails = PatData.get(regnNo = regnNo)
-		patientDetails = {	
-						'regnNo' : patTableDetails.regnNo,
-						'name' :  patTableDetails.name,
-						'addr' : patTableDetails.addr,
-						'age' : patTableDetails.age,
-						'dob' : patTableDetails.dob,
-						'sex' : patTableDetails.sex,
-						'phoneNo' : patTableDetails.phoneNo,
-						'alias' :patTableDetails.alias,
-						'occupation' : patTableDetails.occupation,
-						'conName' : patTableDetails.conName,
-						'conAddr' : patTableDetails.conAddr,
-						'conPhone' : patTableDetails.conPhone,
-						'idNos' : patTableDetails.idNos,
-						'nextDateOfVisit' : patDataDetails.nextDateOfVisit,
-						'bloodPressure' : patDataDetails.bloodPressure,
-						'pulseRate' : patDataDetails.pulseRate,
-						'bodyTemperature' : patDataDetails.bodyTemperature,
-						'bmi' : patDataDetails.bmi,
-						'diagnosis' : patDataDetails.diagnosis,
-						'weight' : patDataDetails.weight 
-						}
-		return patientDetails
+		return patDataDetails,patTableDetails	
 	else:
 		return 0
 
