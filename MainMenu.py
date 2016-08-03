@@ -66,21 +66,30 @@ class MyDialog(QtGui.QDialog):
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
-        
+               
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
         self.view.clear()
         self.sql_query.clear()
-
+        print "woew"
         self.btn_query.clicked.connect(self.queryProcess)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.addWidget(self.label)
         self.verticalLayout.addWidget(self.sql_query)
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
+
+        msgData = QMessageBox()
+        msgData.setIcon(QMessageBox.Information)
+        msgData.setText("Open App?")
+        msgData.setWindowTitle("Manaparai General Hospital")
+        msgData.setStandardButtons(QMessageBox.Ok)
+        retval = msgData.exec_()
+
     def queryProcess(self):
+
         self.model.clear()
         self.view.clear()
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
@@ -135,6 +144,9 @@ class MyDialog(QtGui.QDialog):
                 headerNames.append("~~~~~~~~~~~~~~~~~~~")
                 headerNames.append("")
                 for patdet in patient[1]:
+                    headerNames.append("")
+                    headerNames.append("DATE OF VISIT:\t" + str(patdet.dataOfVisit))
+                    headerNames.append("~~~~~~~~~~~~~")
                     testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
                     for test in testDetails:
                         headerNames.append("Test Name\t" + str(test.testName))
