@@ -40,6 +40,7 @@ class PatData(BaseModel):
 
 	regnNo = ForeignKeyField(PatTable, related_name = 'visits')
 	currentUnixTime = DateTimeField(default=datetime.datetime.now)
+	dataOfVisit =  DateField()
 	nextDateOfVisit = DateField()
 	bloodPressure = CharField(max_length=5)
 	pulseRate = CharField(max_length=5)

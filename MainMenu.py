@@ -83,6 +83,7 @@ class MyDialog(QtGui.QDialog):
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecord(RegistrationNo)
+        print patient
         if patient == 0:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
@@ -96,22 +97,22 @@ class MyDialog(QtGui.QDialog):
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
         else:
-            if not patient:
+            if patient:
                 headerNames=[]
                 self.model.setColumnCount(13)
-                headerNames.append("Registration No.\t" + patient[0]['regnNo'])
-                headerNames.append("Name\t\t" + patient[0]['name'])
-                headerNames.append("Address\t\t" + patient[0]['addr'])
-                headerNames.append("Age\t\t" + str(patient[0]['age']))
-                headerNames.append("DOB\t\t" + str(patient[0]['dob']))
-                headerNames.append("Sex\t\t" + patient[0]['sex'])
-                headerNames.append("Phone\t\t" + str(patient[0]['phoneNo']))
-                headerNames.append("Alias\t\t" + patient[0]['alias'])
-                headerNames.append("Occupation\t\t" + patient[0]['occupation'])
-                headerNames.append("Con Name\t\t" + patient[0]['conName'])
-                headerNames.append("Con Address\t" + patient[0]['conAddr'])
-                headerNames.append("Con Phone\t\t" + patient[0]['conPhone'])
-                headerNames.append("ID No\t\t" + str(patient[0]['idNos']))
+                headerNames.append("Registration No.\t" + patient[0].regnNo)
+                headerNames.append("Name\t\t" + patient[0].name)
+                headerNames.append("Address\t\t" + patient[0].addr)
+                headerNames.append("Age\t\t" + str(patient[0].age))
+                headerNames.append("DOB\t\t" + str(patient[0].dob))
+                headerNames.append("Sex\t\t" + patient[0].sex)
+                headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
+                headerNames.append("Alias\t\t" + patient[0].alias)
+                headerNames.append("Occupation\t\t" + patient[0].occupation)
+                headerNames.append("Con Name\t\t" + patient[0].conName)
+                headerNames.append("Con Address\t" + patient[0].conAddr)
+                headerNames.append("Con Phone\t\t" + patient[0].conPhone)
+                headerNames.append("ID No\t\t" + str(patient[0].idNos))
                 #headerNames.append("nextDateOfVisit\t" + str(patient['nextDateOfVisit']))
                 #headerNames.append("bloodPressure\t" + str(patient['bloodPressure']))
                 #headerNames.append("pulseRate\t\t" + str(patient['pulseRate']))

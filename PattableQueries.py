@@ -33,6 +33,7 @@ def insertPatientData(inputsData):
 	insertRecord = PatData.create(
 								  regnNo=inputsData['RegNo'],
 								  #currentUnixTime=inputsData['currentUnixTime'],
+								  dataOfVisit=date.today(),
 								  nextDateOfVisit=date(inputsData['NextDateOfVisit'].year(),inputsData['NextDateOfVisit'].month(),inputsData['NextDateOfVisit'].day()),
 								  bloodPressure=inputsData['BloodPressure'],
 								  pulseRate=inputsData['PulseRate'],
@@ -90,12 +91,13 @@ def getPatientRecord(regnNo):
 		patTableDetails = PatTable.get(regnNo = regnNo)
 	else:
 		return 0;
-	patDataDetails = PatData.select().where(PatData.regnNo == regnNo)
+	patDataDetails = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
 	if patDataDetails.exists():
-		return patTableDetails,patDataDetails
+		testDetails = TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime)
+		return patTableDetails,patDataDetails,testDetails
 	else:
 		return 0
-
+	
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:
 		testDataDetails = TestData.select().where(
