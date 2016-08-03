@@ -22,7 +22,7 @@ from peewee import *
 
 #function to increment regno in the PatTable
 def regno():
-    db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+    db = MySQLDatabase('hospitaldb', user='root', password='', host='localhost')
     db.connect()
     count = PatTable.select().count()
     db.close()

@@ -80,6 +80,7 @@ class MyDialog(QtGui.QDialog):
         self.verticalLayout.addWidget(self.view)
     def queryProcess(self):
         self.model.clear()
+        self.list.clear()
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecord(RegistrationNo)
