@@ -96,39 +96,58 @@ class MyDialog(QtGui.QDialog):
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
         else:
-            headerNames=[]
-            self.model.setColumnCount(13)
-            headerNames.append("Registration No.\t" + patient['regnNo'])
-            headerNames.append("Name\t\t" + patient['name'])
-            headerNames.append("Address\t\t" + patient['addr'])
-            headerNames.append("Age\t\t" + str(patient['age']))
-            headerNames.append("DOB\t\t" + str(patient['dob']))
-            headerNames.append("Sex\t\t" + patient['sex'])
-            headerNames.append("Phone\t\t" + str(patient['phoneNo']))
-            headerNames.append("Alias\t\t" + patient['alias'])
-            headerNames.append("Occupation\t\t" + patient['occupation'])
-            headerNames.append("Con Name\t\t" + patient['conName'])
-            headerNames.append("Con Address\t" + patient['conAddr'])
-            headerNames.append("Con Phone\t\t" + patient['conPhone'])
-            headerNames.append("ID No\t\t" + str(patient['idNos']))
-            headerNames.append("nextDateOfVisit\t" + str(patient['nextDateOfVisit']))
-            headerNames.append("bloodPressure\t" + str(patient['bloodPressure']))
-            headerNames.append("pulseRate\t\t" + str(patient['pulseRate']))
-            headerNames.append("bodyTemperature\t" + str(patient['bodyTemperature']))
-            headerNames.append("bmi\t\t" + str(patient['bmi']))
-            headerNames.append("diagnosis\t\t" + patient['diagnosis'])
-            headerNames.append("weight\t\t" + str(patient['weight']))
-            #self.model.setHorizontalHeaderLabels(headerNames)
-            '''i=0
-            for j in range (0,20):
-                item = QStandardItem(lists[j])
-                self.model.setItem(i, j, item)
-            self.view.setModel(self.model)
-            self.label = QtGui.QLabel(self)
-            self.label.setGeometry(QtCore.QRect(390, 400, 111, 21))
-            print "ok"
-            self.label.setText("Reg No:")'''
-            self.view.addItems(headerNames)
+            if not patient:
+                headerNames=[]
+                self.model.setColumnCount(13)
+                headerNames.append("Registration No.\t" + patient[0]['regnNo'])
+                headerNames.append("Name\t\t" + patient[0]['name'])
+                headerNames.append("Address\t\t" + patient[0]['addr'])
+                headerNames.append("Age\t\t" + str(patient[0]['age']))
+                headerNames.append("DOB\t\t" + str(patient[0]['dob']))
+                headerNames.append("Sex\t\t" + patient[0]['sex'])
+                headerNames.append("Phone\t\t" + str(patient[0]['phoneNo']))
+                headerNames.append("Alias\t\t" + patient[0]['alias'])
+                headerNames.append("Occupation\t\t" + patient[0]['occupation'])
+                headerNames.append("Con Name\t\t" + patient[0]['conName'])
+                headerNames.append("Con Address\t" + patient[0]['conAddr'])
+                headerNames.append("Con Phone\t\t" + patient[0]['conPhone'])
+                headerNames.append("ID No\t\t" + str(patient[0]['idNos']))
+                #headerNames.append("nextDateOfVisit\t" + str(patient['nextDateOfVisit']))
+                #headerNames.append("bloodPressure\t" + str(patient['bloodPressure']))
+                #headerNames.append("pulseRate\t\t" + str(patient['pulseRate']))
+                #headerNames.append("bodyTemperature\t" + str(patient['bodyTemperature']))
+                #headerNames.append("bmi\t\t" + str(patient['bmi']))
+                #headerNames.append("diagnosis\t\t" + patient['diagnosis'])
+                #headerNames.append("weight\t\t" + str(patient['weight']))
+                headerNames.append("")
+                headerNames.append("")
+                headerNames.append("")
+                self.label3 = QtGui.QLabel(self)
+                myFont=QtGui.QFont()
+                myFont.setBold(True)
+                self.label3.setFont(myFont)
+                self.label3.setText("Patient Test Details :")
+                headerNames.append("")
+                for patdet in patient[1]:
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.nextDateOfVisit))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.bloodPressure))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.pulseRate))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.bodyTemperature))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.bmi))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.diagnosis))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.weight))
+                    
+                #self.model.setHorizontalHeaderLabels(headerNames)
+                '''i=0
+                for j in range (0,20):
+                    item = QStandardItem(lists[j])
+                    self.model.setItem(i, j, item)
+                self.view.setModel(self.model)
+                self.label = QtGui.QLabel(self)
+                self.label.setGeometry(QtCore.QRect(390, 400, 111, 21))
+                print "ok"
+                self.label.setText("Reg No:")'''
+                self.view.addItems(headerNames)
 
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
