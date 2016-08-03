@@ -71,6 +71,8 @@ class MyDialog(QtGui.QDialog):
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
+        self.view.clear()
+        self.sql_query.clear()
 
         self.btn_query.clicked.connect(self.queryProcess)
         self.verticalLayout = QtGui.QVBoxLayout(self)
@@ -80,7 +82,7 @@ class MyDialog(QtGui.QDialog):
         self.verticalLayout.addWidget(self.view)
     def queryProcess(self):
         self.model.clear()
-        self.list.clear()
+        self.view.clear()
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecord(RegistrationNo)
@@ -133,10 +135,6 @@ class MyDialog(QtGui.QDialog):
                 headerNames.append("~~~~~~~~~~~~~~~~~~~")
                 headerNames.append("")
                 for patdet in patient[1]:
-                    headerNames.append("")
-                    headerNames.append("DATE OF VISIT:\t" + str(patdet.dataOfVisit))
-                    headerNames.append("~~~~~")
-
                     testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
                     for test in testDetails:
                         headerNames.append("Test Name\t" + str(test.testName))
