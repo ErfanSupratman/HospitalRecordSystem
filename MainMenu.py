@@ -80,6 +80,10 @@ class MyDialog(QtGui.QDialog):
         self.verticalLayout.addWidget(self.sql_query)
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
+
+    def closeEvent(self, event):
+        self.view.clear()
+        self.sql_query.clear()
     def queryProcess(self):
         self.model.clear()
         self.view.clear()
