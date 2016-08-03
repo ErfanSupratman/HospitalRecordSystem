@@ -92,7 +92,7 @@ def getPatientRecord(regnNo):
 		return 0;
 	patDataDetails = PatData.select().where(PatData.regnNo == regnNo)
 	if patDataDetails.exists():
-		return patDataDetails,patTableDetails	
+		return patTableDetails,patDataDetails
 	else:
 		return 0
 
