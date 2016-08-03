@@ -83,7 +83,6 @@ class MyDialog(QtGui.QDialog):
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecord(RegistrationNo)
-        print patient
         if patient == 0:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
@@ -97,22 +96,22 @@ class MyDialog(QtGui.QDialog):
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
         else:
-            if patient:
+            if not patient:
                 headerNames=[]
                 self.model.setColumnCount(13)
-                headerNames.append("Registration No.\t" + patient[0].regnNo)
-                headerNames.append("Name\t\t" + patient[0].name)
-                headerNames.append("Address\t\t" + patient[0].addr)
-                headerNames.append("Age\t\t" + str(patient[0].age))
-                headerNames.append("DOB\t\t" + str(patient[0].dob))
-                headerNames.append("Sex\t\t" + patient[0].sex)
-                headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
-                headerNames.append("Alias\t\t" + patient[0].alias)
-                headerNames.append("Occupation\t\t" + patient[0].occupation)
-                headerNames.append("Con Name\t\t" + patient[0].conName)
-                headerNames.append("Con Address\t" + patient[0].conAddr)
-                headerNames.append("Con Phone\t\t" + patient[0].conPhone)
-                headerNames.append("ID No\t\t" + str(patient[0].idNos))
+                headerNames.append("Registration No.\t" + patient[0]['regnNo'])
+                headerNames.append("Name\t\t" + patient[0]['name'])
+                headerNames.append("Address\t\t" + patient[0]['addr'])
+                headerNames.append("Age\t\t" + str(patient[0]['age']))
+                headerNames.append("DOB\t\t" + str(patient[0]['dob']))
+                headerNames.append("Sex\t\t" + patient[0]['sex'])
+                headerNames.append("Phone\t\t" + str(patient[0]['phoneNo']))
+                headerNames.append("Alias\t\t" + patient[0]['alias'])
+                headerNames.append("Occupation\t\t" + patient[0]['occupation'])
+                headerNames.append("Con Name\t\t" + patient[0]['conName'])
+                headerNames.append("Con Address\t" + patient[0]['conAddr'])
+                headerNames.append("Con Phone\t\t" + patient[0]['conPhone'])
+                headerNames.append("ID No\t\t" + str(patient[0]['idNos']))
                 #headerNames.append("nextDateOfVisit\t" + str(patient['nextDateOfVisit']))
                 #headerNames.append("bloodPressure\t" + str(patient['bloodPressure']))
                 #headerNames.append("pulseRate\t\t" + str(patient['pulseRate']))
@@ -123,20 +122,18 @@ class MyDialog(QtGui.QDialog):
                 headerNames.append("")
                 headerNames.append("")
                 headerNames.append("")
-                self.label3 = QtGui.QLabel(self)
-                myFont=QtGui.QFont()
-                myFont.setBold(True)
-                self.label3.setFont(myFont)
-                self.label3.setText("Patient Test Details :")
+                headerNames.append('\033[1m' + 'Patient Test Detais' + '\033[0m')
                 headerNames.append("")
                 for patdet in patient[1]:
+                    testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
                     headerNames.append("nextDateOfVisit\t" + str(patdet.nextDateOfVisit))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.bloodPressure))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.pulseRate))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.bodyTemperature))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.bmi))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.diagnosis))
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.weight))
+                    headerNames.append("Blood Pressure\t" + str(patdet.bloodPressure))
+                    headerNames.append("Pulse Rate\t" + str(patdet.pulseRate))
+                    headerNames.append("Body Temperature\t" + str(patdet.bodyTemperature))
+                    headerNames.append("BMI\t" + str(patdet.bmi))
+                    headerNames.append("Diagnosis\t" + str(patdet.diagnosis))
+                    headerNames.append("Weight\t" + str(patdet.weight))
+                
                     
                 #self.model.setHorizontalHeaderLabels(headerNames)
                 '''i=0
