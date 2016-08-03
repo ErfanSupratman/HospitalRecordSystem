@@ -81,12 +81,18 @@ class MyDialog(QtGui.QDialog):
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
 
+
         msgData = QMessageBox()
         msgData.setIcon(QMessageBox.Information)
         msgData.setText("Open App?")
         msgData.setWindowTitle("Manaparai General Hospital")
         msgData.setStandardButtons(QMessageBox.Ok)
         retval = msgData.exec_()
+
+
+    def closeEvent(self, event):
+        self.view.clear()
+        self.sql_query.clear()
 
     def queryProcess(self):
 
