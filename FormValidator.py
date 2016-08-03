@@ -13,7 +13,7 @@ TODO:
 
 def RepresentsInt(s):
     try: 
-        int(s)
+        float(s)
         return True
     except ValueError:
         return False
@@ -64,7 +64,7 @@ def PatEntryFormValidate(inputsData):
 	if not validString(inputsData['ConName']):
 		return 0,'\nInvalid entry to contact name\n'
 
-	if not validString(inputsData['ConRTP']):
+	if not validString(inputsData['ConRelation']):
 		return 0,'\nInvalid entry to contact relation\n'
 
 	return 1,''  # No validation error
