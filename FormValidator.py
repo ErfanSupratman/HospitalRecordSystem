@@ -18,6 +18,9 @@ def RepresentsInt(s):
     except ValueError:
         return False
 
+def validBloodPressure(bp):
+	return len(bp)
+
 def validString(name):
 	return re.match(r'^\w+$',name) and not re.match(r'\d',name) and len(name)
 
@@ -78,7 +81,7 @@ def PatDataFormValidate(inputsData):
 	#if not validDate(datetime.date(inputsData['NextDateOfVisit'].year(),inputsData['NextDateOfVisit'].month(),inputsData['NextDateOfVisit'].day())):
 	#	return '\nInvalid date\n'
 
-	if not validInt(inputsData['BloodPressure']):
+	if not validBloodPressure(str(inputsData['BloodPressure'])):
 		return 0,'\nInvalid entry for Blood Pressure\n'
 
 	if not validInt(inputsData['BodyTemperature']):
