@@ -132,6 +132,10 @@ class MyDialog(QtGui.QDialog):
                 headerNames.append("~~~~~~~~~~~~~~~~~~~")
                 headerNames.append("")
                 for patdet in patient[1]:
+                    headerNames.append("")
+                    headerNames.append("DATE OF VISIT:\t" + str(patdet.dataOfVisit))
+                    headerNames.append("~~~~~")
+
                     testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
                     for test in testDetails:
                         headerNames.append("Test Name\t" + str(test.testName))
