@@ -8,6 +8,7 @@ import PatientTestDataForm
 import FormValidator
 import MainMenu
 
+from env import Database,Username,Host,Password
 from PyQt4 import QtGui,QtCore,QtSql
 from PatientEntryForm import Ui_PatientEntryForm
 from PatientDataForm import Ui_PatientDataForm
@@ -22,7 +23,7 @@ from peewee import *
 
 #function to increment regno in the PatTable
 def regno():
-    db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+    db = MySQLDatabase(Database, user=Username, password=Password, host=Host)
     db.connect()
     count = PatTable.select().count()
     db.close()

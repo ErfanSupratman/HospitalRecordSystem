@@ -35,7 +35,7 @@ def insertPatientData(inputsData):
 								  #currentUnixTime=inputsData['currentUnixTime'],
 								  dataOfVisit=date.today(),
 								  nextDateOfVisit=date(inputsData['NextDateOfVisit'].year(),inputsData['NextDateOfVisit'].month(),inputsData['NextDateOfVisit'].day()),
-								  bloodPressure=inputsData['BloodPressure'],
+								  bloodPressure=str(inputsData['BloodPressure']),
 								  pulseRate=inputsData['PulseRate'],
 								  bodyTemperature=inputsData['BodyTemperature'],
 								  bmi=inputsData['Bmi'],

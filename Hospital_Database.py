@@ -1,8 +1,9 @@
 from peewee import *
+from env import Database,Username,Password,Host
 import datetime
 
 #setting DB connection
-db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+db = MySQLDatabase(Database, user=Username, password=Password, host=Host)
 
 
 #base model for meta data of the tables
@@ -42,7 +43,7 @@ class PatData(BaseModel):
 	currentUnixTime = DateTimeField(default=datetime.datetime.now)
 	dataOfVisit =  DateField()
 	nextDateOfVisit = DateField()
-	bloodPressure = CharField(max_length=5)
+	bloodPressure = TextField()
 	pulseRate = CharField(max_length=5)
 	bodyTemperature = CharField(max_length=5)
 	bmi = CharField(max_length=5)
