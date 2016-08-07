@@ -22,7 +22,7 @@ def validBloodPressure(bp):
 	return len(bp)
 
 def validString(name):
-	return re.match(r'^\w+$',name) and not re.match(r'\d',name) and len(name)
+	return re.match(r'^[A-Za-z\s]+$',name) and not re.match(r'\d',name) and len(name)
 
 def validPhone(phoneNo):
 	return re.match(r'^\w+$',phoneNo) and str(phoneNo).isdigit() and len(phoneNo) <= 10
