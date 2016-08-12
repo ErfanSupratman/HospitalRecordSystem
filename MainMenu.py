@@ -66,6 +66,7 @@ class MyDialog(QtGui.QDialog):
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
+        self.label.setText("Enter Name Or Registration Number:")
                
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("View")

@@ -8,7 +8,6 @@ import PatientTestDataForm
 import FormValidator
 import MainMenu
 
-from env import Database,Username,Host,Password
 from PyQt4 import QtGui,QtCore,QtSql
 from PatientEntryForm import Ui_PatientEntryForm
 from PatientDataForm import Ui_PatientDataForm
@@ -23,7 +22,7 @@ from peewee import *
 
 #function to increment regno in the PatTable
 def regno():
-    db = MySQLDatabase(Database, user=Username, password=Password, host=Host)
+    db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
     db.connect()
     count = PatTable.select().count()
     db.close()
@@ -46,6 +45,8 @@ class Queryer(QWidget):
         self.db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
         self.model = QStandardItemModel()
         self.view = QTableView()
+        self.label = QtGui.QLabel(self)
+        self.label.setText("Enter Your Query:")
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("Query")
         self.stack2 = QWidget()
@@ -97,7 +98,8 @@ class Queryer(QWidget):
 
     def stack2UI(self):
         layout = QVBoxLayout()
-      
+
+        layout.addWidget(self.label)
         layout.addWidget(self.sql_query)
         layout.addWidget(self.btn_query)
         layout.addWidget(self.view)
