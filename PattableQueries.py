@@ -86,17 +86,28 @@ def writeRawQuery(query):
 #		print type(j)
 
 def getPatientRecord(regnNo):
-	patTableDetails = PatTable.select().where(PatTable.regnNo == regnNo)
-	if patTableDetails.exists():
-		patTableDetails = PatTable.get(regnNo = regnNo)
+	if not regnNo.isalpha():
+		dataType = 0
+		patTableDetails = PatTable.select().where(PatTable.regnNo == regnNo)
+		if patTableDetails.exists():
+			patTableDetails = PatTable.get(regnNo = regnNo)
+		else:
+			return 0;
+		patDataDetails = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
+		if patDataDetails.exists():
+			testDetails = TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime)
+			return patTableDetails,patDataDetails,testDetails,dataType
+		else:
+			return 0
 	else:
-		return 0;
-	patDataDetails = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
-	if patDataDetails.exists():
-		testDetails = TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime)
-		return patTableDetails,patDataDetails,testDetails
-	else:
-		return 0
+		dataType = 1
+		patTableDetails = PatTable.select().where(PatTable.name.startswith(regnNo))
+		patDataDetails = {}
+		testDetails = {}
+		if patTableDetails.exists():
+			return patTableDetails,patDataDetails,testDetails,dataType
+		else:
+			return 0
 	
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:

@@ -102,7 +102,7 @@ class MyDialog(QtGui.QDialog):
         #lists = ['sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample','sample',]
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecord(RegistrationNo)
-        if patient == 0:
+        if not patient:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
             msgData.setText("This Record has no data!\n please fill out the patient data form.")
@@ -115,7 +115,7 @@ class MyDialog(QtGui.QDialog):
         #write the query here and allow the headernames to be displayed based on result
         #list = writeRawQuery(str(self.sql_query.text()))
         else:
-            if patient:
+            if patient[3] == 0:
                 headerNames=[]
                 self.model.setColumnCount(13)
                 headerNames.append("Registration No.\t" + patient[0].regnNo)
@@ -178,6 +178,34 @@ class MyDialog(QtGui.QDialog):
                 self.label.setGeometry(QtCore.QRect(390, 400, 111, 21))
                 print "ok"
                 self.label.setText("Reg No:")'''
+                self.view.addItems(headerNames)
+            else:
+                headerNames=[]
+                self.model.setColumnCount(13)
+                headerNames.append('MATCHING RECORDS CONTAINING THE KEYWORD (for name) : '+RegistrationNo)
+                headerNames.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                headerNames.append("")
+                for pat in patient[0]:
+                    headerNames.append("Registration No.\t" + pat.regnNo)
+                    headerNames.append("Name\t\t" + pat.name)
+                    headerNames.append("Address\t\t" + pat.addr)
+                    headerNames.append("Age\t\t" + str(pat.age))
+                    headerNames.append("DOB\t\t" + str(pat.dob))
+                    headerNames.append("Sex\t\t" + pat.sex)
+                    headerNames.append("Phone\t\t" + str(pat.phoneNo))
+                    headerNames.append("Alias\t\t" + pat.alias)
+                    headerNames.append("Occupation\t\t" + pat.occupation)
+                    headerNames.append("Con Name\t\t" + pat.conName)
+                    headerNames.append("Con Address\t" + pat.conAddr)
+                    headerNames.append("Con Phone\t\t" + pat.conPhone)
+                    headerNames.append("ID No\t\t" + str(pat.idNos))
+                    headerNames.append("")
+                    headerNames.append("")
+                    headerNames.append("")
+                self.details = QtGui.QLabel(self)
+                font = QtGui.QFont()
+                font.setPointSize(18)
+                font.setBold(True)
                 self.view.addItems(headerNames)
 
 class Ui_MainMenu(object):
