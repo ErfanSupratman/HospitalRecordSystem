@@ -10,7 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from PattableQueries import getPatientRecord
+from PattableQueries import getPatientRecords,getAllRecordsByName
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -110,7 +110,7 @@ class viewRecord(QtGui.QDialog):
         self.model.clear()
         self.view.clear()
         RegistrationNo = str(self.sql_query.text())
-        patient = getPatientRecord(RegistrationNo)
+        patient = getPatientRecords(RegistrationNo)
         if not patient:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)

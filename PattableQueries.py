@@ -56,6 +56,7 @@ def insertTestData(inputsData):
 
 #view
 def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
+        patientRecords = None
 	startDate = date(sy,sm,sd)
 	endDate = date(ey,em,ed)
 	startTime = time.mktime(startDate.timetuple())*1000
@@ -79,6 +80,7 @@ def writeRawQuery(query):
 		print "Invalid Data"
 		return []
 
+
 #get the patient record by Regno from Pattable & PatData
 def getPatientRecords(regnNo):
         patDetails = None
@@ -96,6 +98,13 @@ def getAllRecordsByName(patientName):
                 patients = PatTable.select().where(PatTable.name == patientName)
         return patients
 
+#get all test records of patient between start date and end date
+def getAllPatientRecordsByDate(startDate,endDate):
+        patientIds = None
+        if PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate && dataOfVisit < endDate).exists:
+                patientIds = PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate && dataOfVisit < endDate)
+        return patientIds
+        
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:
 		testDataDetails = TestData.select().where(
