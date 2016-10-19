@@ -100,10 +100,10 @@ def getAllRecordsByName(patientName):
 
 #get all test records of patient between start date and end date
 def getAllPatientRecordsByDate(startDate,endDate):
-        patientIds = None
-        if PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate, dataOfVisit < endDate).exists:
-                patientIds = PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate, dataOfVisit < endDate)
-        return patientIds
+        patientRecords = None
+        if PatData.select(PatData.regnNo).where(PatData.dataOfVisit > startDate,PatData.dataOfVisit < endDate).exists:
+                patientRecords = PatData.select(PatTable.name,PatData.dataOfVisit).join(PatTable).where(PatData.dataOfVisit > startDate, PatData.dataOfVisit < endDate)
+        return patientRecords
         
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:
