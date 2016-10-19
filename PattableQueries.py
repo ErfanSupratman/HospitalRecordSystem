@@ -54,16 +54,6 @@ def insertTestData(inputsData):
         )
 	insertRecord.save()
 
-#view
-def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
-        patientRecords = None
-	startDate = date(sy,sm,sd)
-	endDate = date(ey,em,ed)
-	startTime = time.mktime(startDate.timetuple())*1000
-	endTime = time.mktime(endDate.timetuple())*1000
-	patientRecords = PatTable.select().join(PatData).where(startTime <= PatData.currentUnixTime <= endTime)
-	return patientRecords
-
 
 #query
 def writeRawQuery(query):
@@ -100,10 +90,10 @@ def getAllRecordsByName(patientName):
 
 #get all test records of patient between start date and end date
 def getAllPatientRecordsByDate(startDate,endDate):
-        patientIds = None
-        if PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate, dataOfVisit < endDate).exists:
-                patientIds = PatTable.select(PatTable.regnNo).where(dataOfVisit > startDate, dataOfVisit < endDate)
-        return patientIds
+        patientRecords = None
+        if PatData.select(PatData.regnNo).where(PatData.dataOfVisit > startDate,PatData.dataOfVisit < endDate).exists:
+                patientRecords = PatData.select(PatTable.name,PatData.dataOfVisit).join(PatTable).where(PatData.dataOfVisit > startDate, PatData.dataOfVisit < endDate)
+        return patientRecords
         
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:
