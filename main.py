@@ -139,6 +139,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
+       # print inputsData['DOB'].toPyDate()
         status,message = FormValidator.PatEntryFormValidate(inputsData)
         if status == 1:
             insertPatientDetails(inputsData)
