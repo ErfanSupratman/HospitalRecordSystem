@@ -1,4 +1,4 @@
 Database = 'hospitalDB'
-Username = 'test'
-Password = 'test'
+Username = 'root'
+Password = ''
 Host = 'localhost'

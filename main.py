@@ -18,11 +18,11 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from Hospital_Database import PatTable
 from peewee import *
-
+from env import Database,Username,Password,Host
 
 #function to increment regno in the PatTable
 def regno():
-    db = MySQLDatabase('hospitalDB', user='test', password='test', host='localhost')
+    db = MySQLDatabase(Database, user=Username, password=Password, host=Host)
     db.connect()
     count = PatTable.select().count()
     db.close()
