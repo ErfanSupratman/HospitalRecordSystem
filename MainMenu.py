@@ -66,9 +66,9 @@ class viewRecord(QtGui.QDialog):
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
-        self.btn_query_name = QPushButton("Name")
-        self.btn_query_regno = QPushButton("Registration No")
-        self.btn_query_date = QPushButton("Date")
+        self.radio_name = QtGui.QRadioButton("Name")
+        self.radio_regno = QtGui.QRadioButton("Registration No")
+        self.radio_date = QtGui.QRadioButton("Date")
         #self.label.setText("Enter Name Or Registration Number:")
                
         self.sql_query = QLineEdit()
@@ -79,11 +79,12 @@ class viewRecord(QtGui.QDialog):
         self.sql_query.clear()
         print "woew"
         self.btn_query.clicked.connect(self.queryProcess)
+        #self.radio_date.toggled.connect(self.changeWidget)
         
         self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.addWidget(self.btn_query_name)
-        self.horizontalLayout.addWidget(self.btn_query_regno)
-        self.horizontalLayout.addWidget(self.btn_query_date)
+        self.horizontalLayout.addWidget(self.radio_name)
+        self.horizontalLayout.addWidget(self.radio_regno)
+        self.horizontalLayout.addWidget(self.radio_date)
 
         self.grid = QtGui.QGridLayout(self)
 
@@ -104,6 +105,9 @@ class viewRecord(QtGui.QDialog):
     def closeEvent(self, event):
         self.view.clear()
         self.sql_query.clear()
+
+
+        
 
     def queryProcess(self):
 
