@@ -59,14 +59,16 @@ class viewPatData(QtGui.QDialog):
         print "Working"
 
 
-class MyDialog(QtGui.QDialog):
+class viewRecord(QtGui.QDialog):
     def __init__(self, parent=None):
-        super(MyDialog, self).__init__(parent)
+        super(viewRecord, self).__init__(parent)
 
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
-        self.label.setText("Enter Name Or Registration Number:")
+        self.btn_query_name = QtGui.QPushButton("MyDialog")
+        self.btn_query_name.setText("Name")
+        #self.label.setText("Enter Name Or Registration Number:")
                
         self.sql_query = QLineEdit()
         self.btn_query = QPushButton("View")
@@ -74,10 +76,10 @@ class MyDialog(QtGui.QDialog):
         self.view = QListWidget()
         self.view.clear()
         self.sql_query.clear()
-        print "Running..."
+        print "woew"
         self.btn_query.clicked.connect(self.queryProcess)
         self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.addWidget(self.label)
+        self.verticalLayout.addWidget(self.btn_query_name)
         self.verticalLayout.addWidget(self.sql_query)
         self.verticalLayout.addWidget(self.btn_query)
         self.verticalLayout.addWidget(self.view)
@@ -122,16 +124,9 @@ class MyDialog(QtGui.QDialog):
                 headerNames.append("Alias\t\t" + patient[0].alias)
                 headerNames.append("Occupation\t\t" + patient[0].occupation)
                 headerNames.append("Con Name\t\t" + patient[0].conName)
-                headerNames.append("Con Address\t" + patient[0].conAddr)
+                headerNames.append("Con Address\t\t" + patient[0].conAddr)
                 headerNames.append("Con Phone\t\t" + patient[0].conPhone)
                 headerNames.append("ID No\t\t" + str(patient[0].idNos))
-                #headerNames.append("nextDateOfVisit\t" + str(patient['nextDateOfVisit']))
-                #headerNames.append("bloodPressure\t" + str(patient['bloodPressure']))
-                #headerNames.append("pulseRate\t\t" + str(patient['pulseRate']))
-                #headerNames.append("bodyTemperature\t" + str(patient['bodyTemperature']))
-                #headerNames.append("bmi\t\t" + str(patient['bmi']))
-                #headerNames.append("diagnosis\t\t" + patient['diagnosis'])
-                #headerNames.append("weight\t\t" + str(patient['weight']))
                 headerNames.append("")
                 headerNames.append("")
                 headerNames.append("")
@@ -150,28 +145,17 @@ class MyDialog(QtGui.QDialog):
                     headerNames.append("~~~~~~~~~~~~~")
                     testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
                     for test in testDetails:
-                        headerNames.append("Test Name : \t" + str(test.testName))
-                        headerNames.append("Test Results : \t" + str(test.testResult))
+                        headerNames.append("Test Name\t" + str(test.testName))
+                        headerNames.append("Test Results\t" + str(test.testResult))
                         headerNames.append("")    
-                    headerNames.append("Next Date Of Visit : \t" + str(patdet.nextDateOfVisit))
-                    headerNames.append("Blood Pressure : \t" + str(patdet.bloodPressure))
-                    headerNames.append("Pulse Rate : \t" + str(patdet.pulseRate))
-                    headerNames.append("Body Temperature : \t" + str(patdet.bodyTemperature))
-                    headerNames.append("BMI : \t" + str(patdet.bmi))
-                    headerNames.append("Diagnosis : \t" + str(patdet.diagnosis))
-                    headerNames.append("Weight : \t" + str(patdet.weight))
+                    headerNames.append("nextDateOfVisit\t" + str(patdet.nextDateOfVisit))
+                    headerNames.append("Blood Pressure\t" + str(patdet.bloodPressure))
+                    headerNames.append("Pulse Rate\t" + str(patdet.pulseRate))
+                    headerNames.append("Body Temperature\t" + str(patdet.bodyTemperature))
+                    headerNames.append("BMI\t" + str(patdet.bmi))
+                    headerNames.append("Diagnosis\t" + str(patdet.diagnosis))
+                    headerNames.append("Weight\t" + str(patdet.weight))
                 
-                    
-                #self.model.setHorizontalHeaderLabels(headerNames)
-                '''i=0
-                for j in range (0,20):
-                    item = QStandardItem(lists[j])
-                    self.model.setItem(i, j, item)
-                self.view.setModel(self.model)
-                self.label = QtGui.QLabel(self)
-                self.label.setGeometry(QtCore.QRect(390, 400, 111, 21))
-                print "ok"
-                self.label.setText("Reg No:")'''
                 self.view.addItems(headerNames)
             else:
                 headerNames=[]
@@ -190,7 +174,7 @@ class MyDialog(QtGui.QDialog):
                     headerNames.append("Alias\t\t" + pat.alias)
                     headerNames.append("Occupation\t\t" + pat.occupation)
                     headerNames.append("Con Name\t\t" + pat.conName)
-                    headerNames.append("Con Address\t" + pat.conAddr)
+                    headerNames.append("Con Address\t\t" + pat.conAddr)
                     headerNames.append("Con Phone\t\t" + pat.conPhone)
                     headerNames.append("ID No\t\t" + str(pat.idNos))
                     headerNames.append("")
@@ -282,7 +266,7 @@ class Ui_MainMenu(object):
         self.pushButton_6.setText(_translate("MainMenu", "View Patient Test Data", None))
         self.pushButton_6.clicked.connect(self.on_pushButton_6_click)
         self.viewPatDataText = viewPatData(self)
-        self.dialogTextBrowser = MyDialog(self)
+        self.dialogTextBrowser = viewRecord(self)
     
     def on_pushButton_click(self):
         self.dialogTextBrowser.exec_()
