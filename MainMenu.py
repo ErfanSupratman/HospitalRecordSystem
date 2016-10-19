@@ -130,16 +130,20 @@ class viewRecord(QtGui.QDialog):
 
     def changeWidgetName(self):
         layout = QFormLayout()
-        layout.addRow("Enter Name",QLineEdit())
+        self.sql_query_name = QtGui.QLineEdit()
+        layout.addRow("Enter Name",self.sql_query_name)
         self.stack1.setLayout(layout)
     def changeWidgetRegno(self):
         layout = QFormLayout()
-        layout.addRow("Enter Reg No",QLineEdit())
+        self.sql_query_regno = QtGui.QLineEdit()
+        layout.addRow("Enter Reg No",self.sql_query_regno)
         self.stack2.setLayout(layout)
     def changeWidgetDate(self):
         layout = QFormLayout()
-        layout.addRow("Enter Start Date",QDateEdit())
-        layout.addRow("Enter End Date",QDateEdit())
+        self.sql_query_date1 = QtGui.QDateEdit()
+        self.sql_query_date2 = QtGui.QDateEdit()
+        layout.addRow("Enter Start Date",self.sql_query_date1)
+        layout.addRow("Enter End Date",self.sql_query_date2)
         self.stack3.setLayout(layout)
     def display(self,i):
         self.Stack.setCurrentIndex(i)
@@ -148,6 +152,7 @@ class viewRecord(QtGui.QDialog):
         print self.leftlist.currentRow()
         self.model.clear()
         self.view.clear()
+        print self.sql_query_name.text()
         RegistrationNo = str(self.sql_query.text())
         patient = getPatientRecords(RegistrationNo)
         if not patient:
