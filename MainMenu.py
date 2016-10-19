@@ -10,7 +10,8 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from PattableQueries import getPatientRecords,getAllRecordsByName
+from PattableQueries import getPatientRecords,getAllRecordsByName,getAllPatientRecordsByDate
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -149,95 +150,79 @@ class viewRecord(QtGui.QDialog):
         self.Stack.setCurrentIndex(i)
         
     def queryProcess(self):
-        print self.leftlist.currentRow()
         self.model.clear()
         self.view.clear()
-        print self.sql_query_name.text()
-        RegistrationNo = str(self.sql_query.text())
-        patient = getPatientRecords(RegistrationNo)
-        if not patient:
+        print self.leftlist.currentRow()
+        searchConstraint = self.leftlist.currentRow()
+        #remaind the user to select a constraint
+        if searchConstraint == -1:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
-            msgData.setText("This Record has no data!\n please fill out the patient data form.")
-            msgData.setWindowTitle("No Patient Data")
+            msgData.setText("Please select a constraint.")
+            msgData.setWindowTitle("No Constraint selected")
             msgData.setStandardButtons(QMessageBox.Ok)
             retval = msgData.exec_()
+        elif searchConstraint == 0:
+            patientName = self.sql_query_name.text()
+            print patientName
+            patients = getAllRecordsByName(patientName)
+            for patient in patients:
+                headerNames=[]
+                self.model.setColumnCount(13)
+                headerNames.append("Registration No.\t" + patient.regnNo)
+                headerNames.append("Name\t\t" + patient.name)
+                headerNames.append("Address\t\t" + patient.addr)
+                headerNames.append("Age\t\t" + str(patient.age))
+                headerNames.append("DOB\t\t" + str(patient.dob))
+                headerNames.append("Sex\t\t" + patient.sex)
+                headerNames.append("Phone\t\t" + str(patient.phoneNo))
+                headerNames.append("Alias\t\t" + patient.alias)
+                headerNames.append("Occupation\t\t" + patient.occupation)
+                headerNames.append("Con Name\t\t" + patient.conName)
+                headerNames.append("Con Address\t\t" + patient.conAddr)
+                headerNames.append("Con Phone\t\t" + patient.conPhone)
+                headerNames.append("ID No\t\t" + str(patient.idNos))
+                headerNames.append("")
+                headerNames.append("")
+                headerNames.append("")
+                self.view.addItems(headerNames)
+        elif searchConstraint == 1:
+            regNo = self.sql_query_regno.text()
+            patient = getPatientRecords(regNo)
+            headerNames=[]
+            self.model.setColumnCount(13)
+            headerNames.append("Registration No.\t" + patient[0].regnNo)
+            headerNames.append("Name\t\t" + patient[0].name)
+            headerNames.append("Address\t\t" + patient[0].addr)
+            headerNames.append("Age\t\t" + str(patient[0].age))
+            headerNames.append("DOB\t\t" + str(patient[0].dob))
+            headerNames.append("Sex\t\t" + patient[0].sex)
+            headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
+            headerNames.append("Alias\t\t" + patient[0].alias)
+            headerNames.append("Occupation\t\t" + patient[0].occupation)
+            headerNames.append("Con Name\t\t" + patient[0].conName)
+            headerNames.append("Con Address\t\t" + patient[0].conAddr)
+            headerNames.append("Con Phone\t\t" + patient[0].conPhone)
+            headerNames.append("ID No\t\t" + str(patient[0].idNos))
+            headerNames.append("")
+            headerNames.append("")
+            headerNames.append("")
+            self.view.addItems(headerNames)
         else:
-            if patient[3] == 0:
+            startDate = (self.sql_query_date1.date()).toPyDate()
+            endDate = (self.sql_query_date2.date()).toPyDate()
+            patients = getAllPatientRecordsByDate(startDate,endDate)
+            for patient in patients:
                 headerNames=[]
                 self.model.setColumnCount(13)
-                headerNames.append("Registration No.\t" + patient[0].regnNo)
-                headerNames.append("Name\t\t" + patient[0].name)
-                headerNames.append("Address\t\t" + patient[0].addr)
-                headerNames.append("Age\t\t" + str(patient[0].age))
-                headerNames.append("DOB\t\t" + str(patient[0].dob))
-                headerNames.append("Sex\t\t" + patient[0].sex)
-                headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
-                headerNames.append("Alias\t\t" + patient[0].alias)
-                headerNames.append("Occupation\t\t" + patient[0].occupation)
-                headerNames.append("Con Name\t\t" + patient[0].conName)
-                headerNames.append("Con Address\t\t" + patient[0].conAddr)
-                headerNames.append("Con Phone\t\t" + patient[0].conPhone)
-                headerNames.append("ID No\t\t" + str(patient[0].idNos))
+                headerNames.append("Registration No. : \t" + patient.regnNo.regnNo)
+                headerNames.append("Name : \t\t" + patient.regnNo.name)
+                headerNames.append("Date Of Visit : \t\t" + str(patient.dataOfVisit))
                 headerNames.append("")
                 headerNames.append("")
                 headerNames.append("")
-                self.details = QtGui.QLabel(self)
-                font = QtGui.QFont()
-                font.setPointSize(18)
-                font.setBold(True)
-                self.details.setFont(font)
-                self.details.setText("Patient Test Details :")
-                headerNames.append('Patient Test Detais')
-                headerNames.append("~~~~~~~~~~~~~~~~~~~")
-                headerNames.append("")
-                for patdet in patient[1]:
-                    headerNames.append("")
-                    headerNames.append("DATE OF VISIT:\t" + str(patdet.dataOfVisit))
-                    headerNames.append("~~~~~~~~~~~~~")
-                    testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
-                    for test in testDetails:
-                        headerNames.append("Test Name\t" + str(test.testName))
-                        headerNames.append("Test Results\t" + str(test.testResult))
-                        headerNames.append("")    
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.nextDateOfVisit))
-                    headerNames.append("Blood Pressure\t" + str(patdet.bloodPressure))
-                    headerNames.append("Pulse Rate\t" + str(patdet.pulseRate))
-                    headerNames.append("Body Temperature\t" + str(patdet.bodyTemperature))
-                    headerNames.append("BMI\t" + str(patdet.bmi))
-                    headerNames.append("Diagnosis\t" + str(patdet.diagnosis))
-                    headerNames.append("Weight\t" + str(patdet.weight))
-                
                 self.view.addItems(headerNames)
-            else:
-                headerNames=[]
-                self.model.setColumnCount(13)
-                headerNames.append('MATCHING RECORDS CONTAINING THE KEYWORD (for name) : '+RegistrationNo)
-                headerNames.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                headerNames.append("")
-                for pat in patient[0]:
-                    headerNames.append("Registration No.\t" + pat.regnNo)
-                    headerNames.append("Name\t\t" + pat.name)
-                    headerNames.append("Address\t\t" + pat.addr)
-                    headerNames.append("Age\t\t" + str(pat.age))
-                    headerNames.append("DOB\t\t" + str(pat.dob))
-                    headerNames.append("Sex\t\t" + pat.sex)
-                    headerNames.append("Phone\t\t" + str(pat.phoneNo))
-                    headerNames.append("Alias\t\t" + pat.alias)
-                    headerNames.append("Occupation\t\t" + pat.occupation)
-                    headerNames.append("Con Name\t\t" + pat.conName)
-                    headerNames.append("Con Address\t\t" + pat.conAddr)
-                    headerNames.append("Con Phone\t\t" + pat.conPhone)
-                    headerNames.append("ID No\t\t" + str(pat.idNos))
-                    headerNames.append("")
-                    headerNames.append("")
-                    headerNames.append("")
-                self.details = QtGui.QLabel(self)
-                font = QtGui.QFont()
-                font.setPointSize(18)
-                font.setBold(True)
-                self.view.addItems(headerNames)
-
+            
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
         MainMenu.setObjectName(_fromUtf8("MainMenu"))
