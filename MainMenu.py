@@ -71,27 +71,49 @@ class viewRecord(QtGui.QDialog):
         self.radio_date = QtGui.QRadioButton("Date")
         #self.label.setText("Enter Name Or Registration Number:")
                
-        self.sql_query = QLineEdit()
+        self.sql_query = QtGui.QLineEdit()
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
         self.view.clear()
         self.sql_query.clear()
-        print "woew"
-        self.btn_query.clicked.connect(self.queryProcess)
-        #self.radio_date.toggled.connect(self.changeWidget)
         
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.addWidget(self.radio_name)
-        self.horizontalLayout.addWidget(self.radio_regno)
-        self.horizontalLayout.addWidget(self.radio_date)
+        self.leftlist = QListWidget ()
+        self.leftlist.insertItem (0, 'Name' )
+        self.leftlist.insertItem (1, 'Registration No' )
+        self.leftlist.insertItem (2, 'Date' )
+
+        self.stack1 = QWidget()
+        self.stack2 = QWidget()
+        self.stack3 = QWidget()
+        self.stack4 = QWidget()
+
+        self.changeWidgetName()
+        self.changeWidgetRegno()
+        self.changeWidgetDate()
+
+        self.Stack = QStackedWidget (self)
+        self.Stack.addWidget (self.stack1)
+        self.Stack.addWidget (self.stack2)
+        self.Stack.addWidget (self.stack3)
+        
+        self.btn_query.clicked.connect(self.queryProcess)
+        self.leftlist.currentRowChanged.connect(self.display)
+        
+        #self.horizontalLayout = QtGui.QHBoxLayout()
+        #self.horizontalLayout.addWidget(self.radio_name)
+        #self.horizontalLayout.addWidget(self.radio_regno)
+        #self.horizontalLayout.addWidget(self.radio_date)
 
         self.grid = QtGui.QGridLayout(self)
 
-        self.grid.addLayout(self.horizontalLayout, 0, 0)
-        self.grid.addWidget(self.sql_query, 1, 0)
-        self.grid.addWidget(self.btn_query, 2, 0)
-        self.grid.addWidget(self.view, 3, 0)
+        self.hbox = QtGui.QHBoxLayout(self)
+        self.hbox.addWidget(self.leftlist)
+        self.hbox.addWidget(self.Stack)
+
+        self.grid.addLayout(self.hbox, 0, 0)
+        self.grid.addWidget(self.btn_query, 1, 0)
+        self.grid.addWidget(self.view, 2, 0)
 
 
         msgData = QMessageBox()
@@ -106,11 +128,24 @@ class viewRecord(QtGui.QDialog):
         self.view.clear()
         self.sql_query.clear()
 
-
+    def changeWidgetName(self):
+        layout = QFormLayout()
+        layout.addRow("Enter Name",QLineEdit())
+        self.stack1.setLayout(layout)
+    def changeWidgetRegno(self):
+        layout = QFormLayout()
+        layout.addRow("Enter Reg No",QLineEdit())
+        self.stack2.setLayout(layout)
+    def changeWidgetDate(self):
+        layout = QFormLayout()
+        layout.addRow("Enter Start Date",QDateEdit())
+        layout.addRow("Enter End Date",QDateEdit())
+        self.stack3.setLayout(layout)
+    def display(self,i):
+        self.Stack.setCurrentIndex(i)
         
-
     def queryProcess(self):
-
+        print self.leftlist.currentRow()
         self.model.clear()
         self.view.clear()
         RegistrationNo = str(self.sql_query.text())
