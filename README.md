@@ -7,7 +7,9 @@ Desktop app to manage patient records
 
 ##Installation
 1. Clone the project
-2. Run the following command from inside the directory - <br/>
+2. copy the `env_example.py` file as `env.py`
+3. Replace the file contents with valid credentials.
+4. Run the following command from inside the directory - <br/>
   `python Hospital_Database.py`.
-3. To run the app, type the following command - <br/>
+5. To run the app, type the following command - <br/>
   `python main.py`.
