@@ -234,11 +234,10 @@ class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
         self.pushButton.clicked.connect(self.addTheRecord)
         self.getRecord = Adder(self)
         self.pushButton_4.clicked.connect(self.addThePatientData)
-        self.getPatientData = PatientDataAdder(self)
+        self.getPatientData = PatientDataAdder(self) 
         self.pushButton_5.clicked.connect(self.addThePatientTestData)
         self.getPatientTestData = PatientTestDataAdder(self)
         self.pushButton_3.clicked.connect(self.writeQuery)
-
 
     @QtCore.pyqtSlot()
     def addTheRecord(self):
