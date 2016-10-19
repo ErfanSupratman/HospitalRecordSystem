@@ -54,16 +54,6 @@ def insertTestData(inputsData):
         )
 	insertRecord.save()
 
-#view
-def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
-        patientRecords = None
-	startDate = date(sy,sm,sd)
-	endDate = date(ey,em,ed)
-	startTime = time.mktime(startDate.timetuple())*1000
-	endTime = time.mktime(endDate.timetuple())*1000
-	patientRecords = PatTable.select().join(PatData).where(startTime <= PatData.currentUnixTime <= endTime)
-	return patientRecords
-
 
 #query
 def writeRawQuery(query):
