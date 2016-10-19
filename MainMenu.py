@@ -66,8 +66,9 @@ class viewRecord(QtGui.QDialog):
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
-        self.btn_query_name = QtGui.QPushButton("MyDialog")
-        self.btn_query_name.setText("Name")
+        self.btn_query_name = QPushButton("Name")
+        self.btn_query_regno = QPushButton("Registration No")
+        self.btn_query_date = QPushButton("Date")
         #self.label.setText("Enter Name Or Registration Number:")
                
         self.sql_query = QLineEdit()
@@ -78,11 +79,18 @@ class viewRecord(QtGui.QDialog):
         self.sql_query.clear()
         print "woew"
         self.btn_query.clicked.connect(self.queryProcess)
-        self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.addWidget(self.btn_query_name)
-        self.verticalLayout.addWidget(self.sql_query)
-        self.verticalLayout.addWidget(self.btn_query)
-        self.verticalLayout.addWidget(self.view)
+        
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.addWidget(self.btn_query_name)
+        self.horizontalLayout.addWidget(self.btn_query_regno)
+        self.horizontalLayout.addWidget(self.btn_query_date)
+
+        self.grid = QtGui.QGridLayout(self)
+
+        self.grid.addLayout(self.horizontalLayout, 0, 0)
+        self.grid.addWidget(self.sql_query, 1, 0)
+        self.grid.addWidget(self.btn_query, 2, 0)
+        self.grid.addWidget(self.view, 3, 0)
 
 
         msgData = QMessageBox()
