@@ -197,7 +197,7 @@ class viewRecord(QtGui.QDialog):
                 retval = msgData.exec_()
         elif searchConstraint == 1:
             regNo = self.sql_query_regno.text()
-            patientDetails,patientData = getPatientRecords(regNo)
+            patientDetails,patientData,testData = getPatientRecords(regNo)
             print patientDetails
             print patientData
             if patientDetails != None:
@@ -230,6 +230,15 @@ class viewRecord(QtGui.QDialog):
                         headerNames.append("Diagnosis\t" + str(visit.diagnosis))
                         headerNames.append("Weight\t" + str(visit.weight))
                         headerNames.append("")
+                        testDetails = filter(lambda test: test.testDate == visit.dataOfVisit,testData)
+                        if len(testDetails):
+                            for test in testDetails:
+                                headerNames.append("Test Name\t" + str(test.testName))
+                                headerNames.append("Test Results\t" + str(test.testResult))
+                                headerNames.append("")
+                        else:
+                                headerNames.append("No Test were taken on "+str(visit.dataOfVisit))
+                                headerNames.append("")
                 else:
                     headerNames.append("")
                     headerNames.append("No data history available for the given Registration number") 

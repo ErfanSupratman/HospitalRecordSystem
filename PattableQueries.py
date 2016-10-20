@@ -75,11 +75,14 @@ def writeRawQuery(query):
 def getPatientRecords(regnNo):
         patDetails = None
         patData = None
+        testData = None
         if PatTable.select().where(PatTable.regnNo == regnNo).exists():
                 patDetails = PatTable.get(regnNo = regnNo)
                 if PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime).exists():
                         patData = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
-        return patDetails, patData
+                        if TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime).exists():
+                                testData = TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime)
+        return patDetails, patData, testData
 
 #get all the patient records with the same name from PatTable
 def getAllRecordsByName(patientName):
