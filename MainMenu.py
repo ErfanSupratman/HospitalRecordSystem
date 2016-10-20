@@ -279,6 +279,7 @@ class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
         MainMenu.setObjectName(_fromUtf8("MainMenu"))
         MainMenu.resize(800, 600)
+        self.setWindowIcon(QtGui.QIcon(_fromUtf8('test.png')))
         self.centralwidget = QtGui.QWidget(MainMenu)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.label = QtGui.QLabel(self.centralwidget)
@@ -290,7 +291,7 @@ class Ui_MainMenu(object):
         self.label.setFont(font)
         self.label.setObjectName(_fromUtf8("label"))
         self.label_2 = QtGui.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(250, 110, 271, 281))
+        self.label_2.setGeometry(QtCore.QRect(350, 110, 271, 281))
         self.label_2.setText(_fromUtf8(""))
         self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("yikg7d5eT.png")))
         self.label_2.setObjectName(_fromUtf8("label_2"))

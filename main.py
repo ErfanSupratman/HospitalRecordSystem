@@ -233,6 +233,8 @@ class HospitalDatabase(QtGui.QMainWindow, MainMenu.Ui_MainMenu):
         super(HospitalDatabase, self).__init__(parent)
         #self.Stack = QStackedWidget(self)
         self.setupUi(self)
+        self.setWindowTitle("Hospital Record System")
+        self.setWindowIcon(QtGui.QIcon('test.png'))
         self.pushButton.clicked.connect(self.addTheRecord)
         self.getRecord = Adder(self)
         self.pushButton_4.clicked.connect(self.addThePatientData)
