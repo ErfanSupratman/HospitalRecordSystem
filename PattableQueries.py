@@ -54,15 +54,6 @@ def insertTestData(inputsData):
         )
 	insertRecord.save()
 
-#view
-def viewRecordsBetweenDates(sd,sm,sy,ed,em,ey):
-	startDate = date(sy,sm,sd)
-	endDate = date(ey,em,ed)
-	startTime = time.mktime(startDate.timetuple())*1000
-	endTime = time.mktime(endDate.timetuple())*1000
-	patientRecords = PatTable.select().join(PatData).where(startTime <= PatData.currentUnixTime <= endTime)
-	return patientRecords
-
 
 #query
 def writeRawQuery(query):
@@ -79,36 +70,31 @@ def writeRawQuery(query):
 		print "Invalid Data"
 		return []
 
-#m = writeRawQuery('SELECT * from pattable')
-#for k in m:
-#	for j in k:
-#		print j	
-#		print type(j)
 
-def getPatientRecord(regnNo):
-	if not regnNo.isalpha():
-		dataType = 0
-		patTableDetails = PatTable.select().where(PatTable.regnNo == regnNo)
-		if patTableDetails.exists():
-			patTableDetails = PatTable.get(regnNo = regnNo)
-		else:
-			return 0;
-		patDataDetails = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
-		if patDataDetails.exists():
-			testDetails = TestData.select().where(TestData.regnNo == regnNo).order_by(-TestData.currentUnixTime)
-			return patTableDetails,patDataDetails,testDetails,dataType
-		else:
-			return 0
-	else:
-		dataType = 1
-		patTableDetails = PatTable.select().where(PatTable.name.startswith(regnNo))
-		patDataDetails = {}
-		testDetails = {}
-		if patTableDetails.exists():
-			return patTableDetails,patDataDetails,testDetails,dataType
-		else:
-			return 0
-	
+#get the patient record by Regno from Pattable & PatData
+def getPatientRecords(regnNo):
+        patDetails = None
+        patData = None
+        if PatTable.select().where(PatTable.regnNo == regnNo).exists():
+                patDetails = PatTable.get(regnNo = regnNo)
+                if PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime).exists():
+                        patData = PatData.select().where(PatData.regnNo == regnNo).order_by(-PatData.currentUnixTime)
+        return patDetails, patData
+
+#get all the patient records with the same name from PatTable
+def getAllRecordsByName(patientName):
+        patients = None
+        if PatTable.select().where(PatTable.name == patientName).exists():
+                patients = PatTable.select().where(PatTable.name == patientName)
+        return patients
+
+#get all test records of patient between start date and end date
+def getAllPatientRecordsByDate(startDate,endDate):
+        patientRecords = None
+        if len(PatData.select(PatData.regnNo).where(PatData.dataOfVisit > startDate,PatData.dataOfVisit < endDate)) != 0:
+                patientRecords = PatData.select(PatTable.name,PatTable.regnNo,PatData.dataOfVisit).join(PatTable).where(PatData.dataOfVisit > startDate, PatData.dataOfVisit < endDate)
+        return patientRecords
+        
 def getPatientTest(regnNo,dateOfVisit):
 	if dateOfVisit != None:
 		testDataDetails = TestData.select().where(

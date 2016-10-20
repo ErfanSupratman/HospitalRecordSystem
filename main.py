@@ -194,6 +194,7 @@ class PatientDataAdder(QtGui.QDialog,PatientDataForm.Ui_PatientDataForm):
             msgData.setWindowTitle("\nRecord Not Added")
             msgData.setStandardButtons(QMessageBox.Ok)
             retval = msgData.exec_()                
+
 #class for adding patient result data
 class PatientTestDataAdder(QtGui.QDialog,PatientTestDataForm.Ui_PatientTestDataForm):
 

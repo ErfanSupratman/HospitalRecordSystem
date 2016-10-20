@@ -10,7 +10,8 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from PattableQueries import getPatientRecord
+from PattableQueries import getPatientRecords,getAllRecordsByName,getAllPatientRecordsByDate
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -66,23 +67,54 @@ class viewRecord(QtGui.QDialog):
         self.setWindowTitle("View Records")
         self.setGeometry(300, 300, 700, 700)
         self.label = QtGui.QLabel(self)
-        self.btn_query_name = QtGui.QPushButton("MyDialog")
-        self.btn_query_name.setText("Name")
+        self.radio_name = QtGui.QRadioButton("Name")
+        self.radio_regno = QtGui.QRadioButton("Registration No")
+        self.radio_date = QtGui.QRadioButton("Date")
         #self.label.setText("Enter Name Or Registration Number:")
                
-        self.sql_query = QLineEdit()
+        self.sql_query = QtGui.QLineEdit()
         self.btn_query = QPushButton("View")
         self.model = QStandardItemModel()
         self.view = QListWidget()
         self.view.clear()
         self.sql_query.clear()
-        print "woew"
+        
+        self.leftlist = QListWidget ()
+        self.leftlist.insertItem (0, 'Name' )
+        self.leftlist.insertItem (1, 'Registration No' )
+        self.leftlist.insertItem (2, 'Date' )
+
+        self.stack1 = QWidget()
+        self.stack2 = QWidget()
+        self.stack3 = QWidget()
+        self.stack4 = QWidget()
+
+        self.changeWidgetName()
+        self.changeWidgetRegno()
+        self.changeWidgetDate()
+
+        self.Stack = QStackedWidget (self)
+        self.Stack.addWidget (self.stack1)
+        self.Stack.addWidget (self.stack2)
+        self.Stack.addWidget (self.stack3)
+        
         self.btn_query.clicked.connect(self.queryProcess)
-        self.verticalLayout = QtGui.QVBoxLayout(self)
-        self.verticalLayout.addWidget(self.btn_query_name)
-        self.verticalLayout.addWidget(self.sql_query)
-        self.verticalLayout.addWidget(self.btn_query)
-        self.verticalLayout.addWidget(self.view)
+        self.leftlist.currentRowChanged.connect(self.display)
+        
+        #self.horizontalLayout = QtGui.QHBoxLayout()
+        #self.horizontalLayout.addWidget(self.radio_name)
+        #self.horizontalLayout.addWidget(self.radio_regno)
+        #self.horizontalLayout.addWidget(self.radio_date)
+
+        self.grid = QtGui.QGridLayout(self)
+
+        self.hbox = QtGui.QHBoxLayout(self)
+        self.hbox.addWidget(self.leftlist)
+        self.hbox.addWidget(self.Stack)
+
+        self.grid.addLayout(self.hbox, 0, 0)
+        self.grid.addWidget(self.btn_query, 1, 0)
+        self.grid.addWidget(self.view, 2, 0)
 
 
         msgData = QMessageBox()
@@ -97,95 +129,143 @@ class viewRecord(QtGui.QDialog):
         self.view.clear()
         self.sql_query.clear()
 
+    def changeWidgetName(self):
+        layout = QFormLayout()
+        self.sql_query_name = QtGui.QLineEdit()
+        layout.addRow("Enter Name",self.sql_query_name)
+        self.stack1.setLayout(layout)
+    def changeWidgetRegno(self):
+        layout = QFormLayout()
+        self.sql_query_regno = QtGui.QLineEdit()
+        layout.addRow("Enter Reg No",self.sql_query_regno)
+        self.stack2.setLayout(layout)
+    def changeWidgetDate(self):
+        layout = QFormLayout()
+        self.sql_query_date1 = QtGui.QDateEdit()
+        self.sql_query_date2 = QtGui.QDateEdit()
+        layout.addRow("Enter Start Date",self.sql_query_date1)
+        layout.addRow("Enter End Date",self.sql_query_date2)
+        self.stack3.setLayout(layout)
+    def display(self,i):
+        self.Stack.setCurrentIndex(i)
+        
     def queryProcess(self):
-
         self.model.clear()
         self.view.clear()
-        RegistrationNo = str(self.sql_query.text())
-        patient = getPatientRecord(RegistrationNo)
-        if not patient:
+        print self.leftlist.currentRow()
+        searchConstraint = self.leftlist.currentRow()
+        #remaind the user to select a constraint
+        if searchConstraint == -1:
             msgData = QMessageBox()
             msgData.setIcon(QMessageBox.Information)
-            msgData.setText("This Record has no data!\n please fill out the patient data form.")
-            msgData.setWindowTitle("No Patient Data")
+            msgData.setText("Please select a constraint.")
+            msgData.setWindowTitle("No Constraint selected")
             msgData.setStandardButtons(QMessageBox.Ok)
             retval = msgData.exec_()
-        else:
-            if patient[3] == 0:
+        elif searchConstraint == 0:
+            patientName = self.sql_query_name.text()
+            #print patientName
+            patients = getAllRecordsByName(patientName)
+            #print patients
+            if patients != None:  
+                for patient in patients:
+                    headerNames=[]
+                    self.model.setColumnCount(13)
+                    headerNames.append("Registration No.\t" + patient.regnNo)
+                    headerNames.append("Name\t\t" + patient.name)
+                    headerNames.append("Address\t\t" + patient.addr)
+                    headerNames.append("Age\t\t" + str(patient.age))
+                    headerNames.append("DOB\t\t" + str(patient.dob))
+                    headerNames.append("Sex\t\t" + patient.sex)
+                    headerNames.append("Phone\t\t" + str(patient.phoneNo))
+                    headerNames.append("Alias\t\t" + patient.alias)
+                    headerNames.append("Occupation\t\t" + patient.occupation)
+                    headerNames.append("Con Name\t\t" + patient.conName)
+                    headerNames.append("Con Address\t\t" + patient.conAddr)
+                    headerNames.append("Con Phone\t\t" + patient.conPhone)
+                    headerNames.append("ID No\t\t" + str(patient.idNos))
+                    headerNames.append("")
+                    headerNames.append("")
+                    headerNames.append("")
+                    self.view.addItems(headerNames)
+            else:
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No records found with the given name!")
+                msgData.setWindowTitle("No match")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
+        elif searchConstraint == 1:
+            regNo = self.sql_query_regno.text()
+            patientDetails,patientData = getPatientRecords(regNo)
+            print patientDetails
+            print patientData
+            if patientDetails != None:
                 headerNames=[]
                 self.model.setColumnCount(13)
-                headerNames.append("Registration No.\t" + patient[0].regnNo)
-                headerNames.append("Name\t\t" + patient[0].name)
-                headerNames.append("Address\t\t" + patient[0].addr)
-                headerNames.append("Age\t\t" + str(patient[0].age))
-                headerNames.append("DOB\t\t" + str(patient[0].dob))
-                headerNames.append("Sex\t\t" + patient[0].sex)
-                headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
-                headerNames.append("Alias\t\t" + patient[0].alias)
-                headerNames.append("Occupation\t\t" + patient[0].occupation)
-                headerNames.append("Con Name\t\t" + patient[0].conName)
-                headerNames.append("Con Address\t\t" + patient[0].conAddr)
-                headerNames.append("Con Phone\t\t" + patient[0].conPhone)
-                headerNames.append("ID No\t\t" + str(patient[0].idNos))
+                headerNames.append("Registration No.\t" + patientDetails.regnNo)
+                headerNames.append("Name\t\t" + patientDetails.name)
+                headerNames.append("Address\t\t" + patientDetails.addr)
+                headerNames.append("Age\t\t" + str(patientDetails.age))
+                headerNames.append("DOB\t\t" + str(patientDetails.dob))
+                headerNames.append("Sex\t\t" + patientDetails.sex)
+                headerNames.append("Phone\t\t" + str(patientDetails.phoneNo))
+                headerNames.append("Alias\t\t" + patientDetails.alias)
+                headerNames.append("Occupation\t\t" + patientDetails.occupation)
+                headerNames.append("Con Name\t\t" + patientDetails.conName)
+                headerNames.append("Con Address\t\t" + patientDetails.conAddr)
+                headerNames.append("Con Phone\t\t" + patientDetails.conPhone)
+                headerNames.append("ID No\t\t" + str(patientDetails.idNos))
                 headerNames.append("")
                 headerNames.append("")
-                headerNames.append("")
-                self.details = QtGui.QLabel(self)
-                font = QtGui.QFont()
-                font.setPointSize(18)
-                font.setBold(True)
-                self.details.setFont(font)
-                self.details.setText("Patient Test Details :")
-                headerNames.append('Patient Test Detais')
-                headerNames.append("~~~~~~~~~~~~~~~~~~~")
-                headerNames.append("")
-                for patdet in patient[1]:
+                if patientData != None:
+                    for visit in patientData:
+                        headerNames.append("Date Of Visit: \t"+str(visit.dataOfVisit))
+                        headerNames.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                        headerNames.append("nextDateOfVisit\t" + str(visit.nextDateOfVisit))
+                        headerNames.append("Blood Pressure\t" + str(visit.bloodPressure))
+                        headerNames.append("Pulse Rate\t" + str(visit.pulseRate))
+                        headerNames.append("Body Temperature\t" + str(visit.bodyTemperature))
+                        headerNames.append("BMI\t" + str(visit.bmi))
+                        headerNames.append("Diagnosis\t" + str(visit.diagnosis))
+                        headerNames.append("Weight\t" + str(visit.weight))
+                        headerNames.append("")
+                else:
                     headerNames.append("")
-                    headerNames.append("DATE OF VISIT:\t" + str(patdet.dataOfVisit))
-                    headerNames.append("~~~~~~~~~~~~~")
-                    testDetails = filter(lambda test: test.testDate == patdet.dataOfVisit,patient[2])
-                    for test in testDetails:
-                        headerNames.append("Test Name\t" + str(test.testName))
-                        headerNames.append("Test Results\t" + str(test.testResult))
-                        headerNames.append("")    
-                    headerNames.append("nextDateOfVisit\t" + str(patdet.nextDateOfVisit))
-                    headerNames.append("Blood Pressure\t" + str(patdet.bloodPressure))
-                    headerNames.append("Pulse Rate\t" + str(patdet.pulseRate))
-                    headerNames.append("Body Temperature\t" + str(patdet.bodyTemperature))
-                    headerNames.append("BMI\t" + str(patdet.bmi))
-                    headerNames.append("Diagnosis\t" + str(patdet.diagnosis))
-                    headerNames.append("Weight\t" + str(patdet.weight))
-                
+                    headerNames.append("No data history available for the given Registration number") 
+                headerNames.append("")
+                headerNames.append("")
                 self.view.addItems(headerNames)
             else:
-                headerNames=[]
-                self.model.setColumnCount(13)
-                headerNames.append('MATCHING RECORDS CONTAINING THE KEYWORD (for name) : '+RegistrationNo)
-                headerNames.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                headerNames.append("")
-                for pat in patient[0]:
-                    headerNames.append("Registration No.\t" + pat.regnNo)
-                    headerNames.append("Name\t\t" + pat.name)
-                    headerNames.append("Address\t\t" + pat.addr)
-                    headerNames.append("Age\t\t" + str(pat.age))
-                    headerNames.append("DOB\t\t" + str(pat.dob))
-                    headerNames.append("Sex\t\t" + pat.sex)
-                    headerNames.append("Phone\t\t" + str(pat.phoneNo))
-                    headerNames.append("Alias\t\t" + pat.alias)
-                    headerNames.append("Occupation\t\t" + pat.occupation)
-                    headerNames.append("Con Name\t\t" + pat.conName)
-                    headerNames.append("Con Address\t\t" + pat.conAddr)
-                    headerNames.append("Con Phone\t\t" + pat.conPhone)
-                    headerNames.append("ID No\t\t" + str(pat.idNos))
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No matching record with the given Registration No.")
+                msgData.setWindowTitle("No match")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
+        else:
+            startDate = (self.sql_query_date1.date()).toPyDate()
+            endDate = (self.sql_query_date2.date()).toPyDate()
+            patients = getAllPatientRecordsByDate(startDate,endDate)
+            print patients
+            if patients != None:
+                for patient in patients:
+                    headerNames=[]
+                    self.model.setColumnCount(13)
+                    headerNames.append("Registration No. : \t" + patient.regnNo.regnNo)
+                    headerNames.append("Name : \t\t" + patient.regnNo.name)
+                    headerNames.append("Date Of Visit : \t\t" + str(patient.dataOfVisit))
                     headerNames.append("")
                     headerNames.append("")
                     headerNames.append("")
-                self.details = QtGui.QLabel(self)
-                font = QtGui.QFont()
-                font.setPointSize(18)
-                font.setBold(True)
-                self.view.addItems(headerNames)
-
+                    self.view.addItems(headerNames)	
+            else:
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No records with the given Range!")
+                msgData.setWindowTitle("No matches")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
         MainMenu.setObjectName(_fromUtf8("MainMenu"))
