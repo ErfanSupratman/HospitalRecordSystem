@@ -13,3 +13,4 @@ Desktop app to manage patient records
   `python Hospital_Database.py`.
 5. To run the app, type the following command - <br/>
   `python main.py`.
+6. If the app is run on Windows, then start the SQL server and serve it on localhost (preferably via [WAMP](http://www.wampserver.com/en/))
