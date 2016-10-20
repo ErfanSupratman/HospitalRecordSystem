@@ -164,65 +164,108 @@ class viewRecord(QtGui.QDialog):
             retval = msgData.exec_()
         elif searchConstraint == 0:
             patientName = self.sql_query_name.text()
-            print patientName
+            #print patientName
             patients = getAllRecordsByName(patientName)
-            for patient in patients:
+            #print patients
+            if patients != None:  
+                for patient in patients:
+                    headerNames=[]
+                    self.model.setColumnCount(13)
+                    headerNames.append("Registration No.\t" + patient.regnNo)
+                    headerNames.append("Name\t\t" + patient.name)
+                    headerNames.append("Address\t\t" + patient.addr)
+                    headerNames.append("Age\t\t" + str(patient.age))
+                    headerNames.append("DOB\t\t" + str(patient.dob))
+                    headerNames.append("Sex\t\t" + patient.sex)
+                    headerNames.append("Phone\t\t" + str(patient.phoneNo))
+                    headerNames.append("Alias\t\t" + patient.alias)
+                    headerNames.append("Occupation\t\t" + patient.occupation)
+                    headerNames.append("Con Name\t\t" + patient.conName)
+                    headerNames.append("Con Address\t\t" + patient.conAddr)
+                    headerNames.append("Con Phone\t\t" + patient.conPhone)
+                    headerNames.append("ID No\t\t" + str(patient.idNos))
+                    headerNames.append("")
+                    headerNames.append("")
+                    headerNames.append("")
+                    self.view.addItems(headerNames)
+            else:
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No records found with the given name!")
+                msgData.setWindowTitle("No match")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
+        elif searchConstraint == 1:
+            regNo = self.sql_query_regno.text()
+            patientDetails,patientData = getPatientRecords(regNo)
+            print patientDetails
+            print patientData
+            if patientDetails != None:
                 headerNames=[]
                 self.model.setColumnCount(13)
-                headerNames.append("Registration No.\t" + patient.regnNo)
-                headerNames.append("Name\t\t" + patient.name)
-                headerNames.append("Address\t\t" + patient.addr)
-                headerNames.append("Age\t\t" + str(patient.age))
-                headerNames.append("DOB\t\t" + str(patient.dob))
-                headerNames.append("Sex\t\t" + patient.sex)
-                headerNames.append("Phone\t\t" + str(patient.phoneNo))
-                headerNames.append("Alias\t\t" + patient.alias)
-                headerNames.append("Occupation\t\t" + patient.occupation)
-                headerNames.append("Con Name\t\t" + patient.conName)
-                headerNames.append("Con Address\t\t" + patient.conAddr)
-                headerNames.append("Con Phone\t\t" + patient.conPhone)
-                headerNames.append("ID No\t\t" + str(patient.idNos))
+                headerNames.append("Registration No.\t" + patientDetails.regnNo)
+                headerNames.append("Name\t\t" + patientDetails.name)
+                headerNames.append("Address\t\t" + patientDetails.addr)
+                headerNames.append("Age\t\t" + str(patientDetails.age))
+                headerNames.append("DOB\t\t" + str(patientDetails.dob))
+                headerNames.append("Sex\t\t" + patientDetails.sex)
+                headerNames.append("Phone\t\t" + str(patientDetails.phoneNo))
+                headerNames.append("Alias\t\t" + patientDetails.alias)
+                headerNames.append("Occupation\t\t" + patientDetails.occupation)
+                headerNames.append("Con Name\t\t" + patientDetails.conName)
+                headerNames.append("Con Address\t\t" + patientDetails.conAddr)
+                headerNames.append("Con Phone\t\t" + patientDetails.conPhone)
+                headerNames.append("ID No\t\t" + str(patientDetails.idNos))
                 headerNames.append("")
+                headerNames.append("")
+                if patientData != None:
+                    for visit in patientData:
+                        headerNames.append("Date Of Visit: \t"+str(visit.dataOfVisit))
+                        headerNames.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                        headerNames.append("nextDateOfVisit\t" + str(visit.nextDateOfVisit))
+                        headerNames.append("Blood Pressure\t" + str(visit.bloodPressure))
+                        headerNames.append("Pulse Rate\t" + str(visit.pulseRate))
+                        headerNames.append("Body Temperature\t" + str(visit.bodyTemperature))
+                        headerNames.append("BMI\t" + str(visit.bmi))
+                        headerNames.append("Diagnosis\t" + str(visit.diagnosis))
+                        headerNames.append("Weight\t" + str(visit.weight))
+                        headerNames.append("")
+                else:
+                    headerNames.append("")
+                    headerNames.append("No data history available for the given Registration number") 
                 headerNames.append("")
                 headerNames.append("")
                 self.view.addItems(headerNames)
-        elif searchConstraint == 1:
-            regNo = self.sql_query_regno.text()
-            patient = getPatientRecords(regNo)
-            headerNames=[]
-            self.model.setColumnCount(13)
-            headerNames.append("Registration No.\t" + patient[0].regnNo)
-            headerNames.append("Name\t\t" + patient[0].name)
-            headerNames.append("Address\t\t" + patient[0].addr)
-            headerNames.append("Age\t\t" + str(patient[0].age))
-            headerNames.append("DOB\t\t" + str(patient[0].dob))
-            headerNames.append("Sex\t\t" + patient[0].sex)
-            headerNames.append("Phone\t\t" + str(patient[0].phoneNo))
-            headerNames.append("Alias\t\t" + patient[0].alias)
-            headerNames.append("Occupation\t\t" + patient[0].occupation)
-            headerNames.append("Con Name\t\t" + patient[0].conName)
-            headerNames.append("Con Address\t\t" + patient[0].conAddr)
-            headerNames.append("Con Phone\t\t" + patient[0].conPhone)
-            headerNames.append("ID No\t\t" + str(patient[0].idNos))
-            headerNames.append("")
-            headerNames.append("")
-            headerNames.append("")
-            self.view.addItems(headerNames)
+            else:
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No matching record with the given Registration No.")
+                msgData.setWindowTitle("No match")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
         else:
             startDate = (self.sql_query_date1.date()).toPyDate()
             endDate = (self.sql_query_date2.date()).toPyDate()
             patients = getAllPatientRecordsByDate(startDate,endDate)
-            for patient in patients:
-                headerNames=[]
-                self.model.setColumnCount(13)
-                headerNames.append("Registration No. : \t" + patient.regnNo.regnNo)
-                headerNames.append("Name : \t\t" + patient.regnNo.name)
-                headerNames.append("Date Of Visit : \t\t" + str(patient.dataOfVisit))
-                headerNames.append("")
-                headerNames.append("")
-                headerNames.append("")
-                self.view.addItems(headerNames)
-            
+            print patients
+            if patients != None:
+                for patient in patients:
+                    headerNames=[]
+                    self.model.setColumnCount(13)
+                    headerNames.append("Registration No. : \t" + patient.regnNo.regnNo)
+                    headerNames.append("Name : \t\t" + patient.regnNo.name)
+                    headerNames.append("Date Of Visit : \t\t" + str(patient.dataOfVisit))
+                    headerNames.append("")
+                    headerNames.append("")
+                    headerNames.append("")
+                    self.view.addItems(headerNames)	
+            else:
+                msgData = QMessageBox()
+                msgData.setIcon(QMessageBox.Information)
+                msgData.setText("No records with the given Range!")
+                msgData.setWindowTitle("No matches")
+                msgData.setStandardButtons(QMessageBox.Ok)
+                retval = msgData.exec_()
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
         MainMenu.setObjectName(_fromUtf8("MainMenu"))
