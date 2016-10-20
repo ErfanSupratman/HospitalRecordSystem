@@ -293,7 +293,7 @@ class Ui_MainMenu(object):
         self.label_2 = QtGui.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(350, 110, 271, 281))
         self.label_2.setText(_fromUtf8(""))
-        self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("yikg7d5eT.png")))
+        self.label_2.setPixmap(QtGui.QPixmap(_fromUtf8("central_icon.png")))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(20, 490, 131, 41))
