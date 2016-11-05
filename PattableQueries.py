@@ -9,6 +9,7 @@ Insert commands for the following tables  - PatTable (patient details)
                                             PatData  (patient data)
 '''
 
+#insert the given patient records into the PatTable table
 def insertPatientDetails(inputsData):
 	insertRecord = PatTable.create(
                 name=inputsData['Name'],
@@ -28,7 +29,7 @@ def insertPatientDetails(inputsData):
         )
 	insertRecord.save()
 
-
+#Insert the given patient data into the PatData table
 def insertPatientData(inputsData):
 	insertRecord = PatData.create(
                 regnNo=inputsData['RegNo'],
@@ -44,7 +45,7 @@ def insertPatientData(inputsData):
         )
 	insertRecord.save()
 
-
+#Insert the given test data into TestData table
 def insertTestData(inputsData):
 	insertRecord = TestData.create(
                 regnNo=inputsData['RegNo'],
@@ -55,7 +56,7 @@ def insertTestData(inputsData):
 	insertRecord.save()
 
 
-#query
+#get the required output using raw SQL query
 def writeRawQuery(query):
 	conn = MySQLdb.connect('localhost', 'test', 'test', 'hospitalDB')
 	cursor = conn.cursor()
