@@ -109,7 +109,7 @@ def getPatientTest(regnNo,dateOfVisit):
 	print testDataDetails[0].testName
 	
 #get all patients [name,diagnosis] for the given date (query by NextDateOfVisit)
-def  getPatientByDate(date = str(date.today())):
+def getPatientsByDate(date = str(date.today())):
         patients = None
         if PatData.select().where(PatData.nextDateOfVisit == date).exists():
                 patients = PatData.select(PatTable.regnNo,PatTable.name,PatData.diagnosis).join(PatTable).where(PatData.nextDateOfVisit == date)
