@@ -10,7 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from PattableQueries import getPatientRecords,getAllRecordsByName,getAllPatientRecordsByDate
+from controllers.GetPatientController import getPatientRecords,getAllRecordsByName,getAllPatientRecordsByDate
 
 
 try:

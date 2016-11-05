@@ -13,7 +13,7 @@ from PatientEntryForm import Ui_PatientEntryForm
 from PatientDataForm import Ui_PatientDataForm
 from PatientTestDataForm import Ui_PatientTestDataForm
 from MainMenu import Ui_MainMenu
-from PattableQueries import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
+from controllers.CreatePatientController import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from Hospital_Database import PatTable
