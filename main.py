@@ -16,7 +16,7 @@ from MainMenu import Ui_MainMenu
 from controllers.CreatePatientController import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from Hospital_Database import PatTable
+from databases.Hospital_Database import PatTable
 from peewee import *
 from env import Database,Username,Password,Host
 

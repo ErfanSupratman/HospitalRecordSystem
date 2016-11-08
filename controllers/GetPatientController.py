@@ -1,6 +1,6 @@
 import peewee
 import MySQLdb
-from Hospital_Database import PatTable,PatData,TestData
+from databases.Hospital_Database import PatTable,PatData,TestData
 from datetime import date
 from FormValidator import *
 
