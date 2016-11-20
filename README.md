@@ -1,9 +1,12 @@
 # HospitalRecordSystem
-Desktop app to manage patient records
+Prototype for a Desktop app to manage patient records
 
 ##Requirements
 1. Python 2.7 or higher - https://www.python.org/downloads/
 2. MySQL - https://dev.mysql.com/downloads/installer/
+3. PyQt4
+4. Peewee
+(dependencies are not included)
 
 ##Installation
 1. Clone the project
