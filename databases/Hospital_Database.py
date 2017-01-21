@@ -1,5 +1,5 @@
 from peewee import *
-from env import Database,Username,Password,Host
+from views.env import Database,Username,Password,Host
 import datetime
 
 #setting DB connection

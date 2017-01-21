@@ -2,7 +2,7 @@ import peewee
 import MySQLdb
 from databases.Hospital_Database import PatTable,PatData,TestData
 from datetime import date
-from FormValidator import *
+from views.FormValidator import *
 
 #get the patient record by Regno from Pattable & PatData
 def getPatientRecords(regnNo):

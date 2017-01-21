@@ -2,23 +2,24 @@
 import sys
 import time
 import datetime
-import PatientEntryForm
-import PatientDataForm
-import PatientTestDataForm
-import FormValidator
-import MainMenu
+import views.PatientEntryForm as PatientEntryForm
+import views.PatientDataForm as PatientDataForm
+import views.PatientTestDataForm as PatientTestDataForm
+import views.FormValidator as FormValidator
+import views.MainMenu as MainMenu
+import views.env as env
 
 from PyQt4 import QtGui,QtCore,QtSql
-from PatientEntryForm import Ui_PatientEntryForm
-from PatientDataForm import Ui_PatientDataForm
-from PatientTestDataForm import Ui_PatientTestDataForm
-from MainMenu import Ui_MainMenu
+from views.PatientEntryForm import Ui_PatientEntryForm
+from views.PatientDataForm import Ui_PatientDataForm
+from views.PatientTestDataForm import Ui_PatientTestDataForm
+from views.MainMenu import Ui_MainMenu
 from controllers.CreatePatientController import insertPatientDetails,insertPatientData,insertTestData,writeRawQuery
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from databases.Hospital_Database import PatTable
 from peewee import *
-from env import Database,Username,Password,Host
+from views.env import Database,Username,Password,Host
 
 #function to increment regno in the PatTable
 def regno():

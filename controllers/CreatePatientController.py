@@ -2,7 +2,7 @@ import peewee
 import MySQLdb
 from databases.Hospital_Database import PatTable,PatData,TestData
 from datetime import date
-from FormValidator import *
+from views.FormValidator import *
 
 '''
 Insert commands for the following tables  - PatTable (patient details)
