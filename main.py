@@ -124,13 +124,15 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             'Address' : self.plainTextEdit_2.toPlainText(),
             'Age' : self.plainTextEdit_3.toPlainText(),
             'Phone': self.plainTextEdit_4.toPlainText(),
-            'Alias' : self.plainTextEdit_5.toPlainText(),
-            'Occupation' : self.plainTextEdit_6.toPlainText(),
-            'ConName' : self.plainTextEdit_7.toPlainText(),
-            'ConAddr' : self.plainTextEdit_8.toPlainText(),
-            'ConPhone' : self.plainTextEdit_9.toPlainText(),
-            'IDNo' : self.plainTextEdit_10.toPlainText(),
-            'ConRelation' : self.plainTextEdit_11.toPlainText(),
+            'Education' : self.dropdown_edu.currentText(),
+            'Caste' : self.dropdown_caste.currentText(),
+            'Alias' : self.plainTextEdit_7.toPlainText(),
+            'Occupation' : self.plainTextEdit_8.toPlainText(),
+            'ConName' : self.plainTextEdit_9.toPlainText(),
+            'ConAddr' : self.plainTextEdit_10.toPlainText(),
+            'ConPhone' : self.plainTextEdit_11.toPlainText(),
+            'IDNo' : self.plainTextEdit_12.toPlainText(),
+            'ConRelation' : self.plainTextEdit_13.toPlainText(),
             'DOB' : self.dateEdit.date(),
             'SexMale' : self.radio1.isChecked(),
             'SexFemale' : self.radio2.isChecked()
@@ -140,7 +142,7 @@ class Adder(QtGui.QDialog, PatientEntryForm.Ui_PatientEntryForm):
             inputsData['Sex'] = 'M'
         else :
             inputsData['Sex'] = 'F'
-       # print inputsData['DOB'].toPyDate()
+
         status,message = FormValidator.PatEntryFormValidate(inputsData)
         if status == 1:
             insertPatientDetails(inputsData)

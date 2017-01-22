@@ -6,7 +6,7 @@
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
-
+import sys
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -119,11 +119,13 @@ class viewRecord(QtGui.QDialog):
 
         msgData = QMessageBox()
         msgData.setIcon(QMessageBox.Information)
-        msgData.setText("Open App?")
+        msgData.setText("Do You want to Open the App?")
         msgData.setWindowTitle("Manaparai General Hospital")
-        msgData.setStandardButtons(QMessageBox.Ok)
+        msgData.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         retval = msgData.exec_()
-
+        if retval == QtGui.QMessageBox.Cancel :
+            #msgData.close(self)
+            sys.exit(0)
 
     def closeEvent(self, event):
         self.view.clear()
