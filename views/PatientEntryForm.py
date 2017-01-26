@@ -8,6 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -26,7 +28,7 @@ except AttributeError:
 class Ui_PatientEntryForm(object):
     def setupUi(self, PatientEntryForm):
         PatientEntryForm.setObjectName(_fromUtf8("PatientEntryForm"))
-        PatientEntryForm.resize(800, 600)
+        PatientEntryForm.resize(800, 650)
         self.centralwidget = QtGui.QWidget(PatientEntryForm)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 
@@ -91,26 +93,56 @@ class Ui_PatientEntryForm(object):
         #self.plainTextEdit_5.setGeometry(QtCore.QRect(160, 390, 181, 31))
         #self.plainTextEdit_5.setObjectName(_fromUtf8("plainTextEdit_5"))
 
+        data_caste = [(("SC/ST",True),[]),
+        (("OC",True),[]),
+        (("BC",True),[]),
+        (("OBC",True),[]),
+        (("MBC",True),[]),
+        (("Physically Handicapped",False), [(("Upper Limb",True), []),(("Lower Limb",True), [])])]
+        
+        self.model_caste = QStandardItemModel()
+        self.additems(self.model_caste, data_caste)
 
         self.dropdown_caste = QtGui.QComboBox(self)
-        self.dropdown_caste.addItem("OC")
+        self.dropdown_caste.setView(QTreeView())
+        self.dropdown_caste.view().setHeaderHidden(True)
+        self.dropdown_caste.view().setItemsExpandable(True)
+        self.dropdown_caste.view().setRootIsDecorated(True)
+        self.dropdown_caste.view().expandAll()
+        self.dropdown_caste.setModel(self.model_caste)
+        
+        '''self.dropdown_caste.addItem("OC")
         self.dropdown_caste.addItem("BC")
         self.dropdown_caste.addItem("OBC")
         self.dropdown_caste.addItem("MBC")
-        self.dropdown_caste.addItem("SC/ST")
+        self.dropdown_caste.addItem("SC/ST")'''
         self.dropdown_caste.move(160, 390)
-        self.dropdown_caste.resize(100, 25)
+        self.dropdown_caste.resize(150, 25)
+
         
         #instead of education
         #self.plainTextEdit_6 = QtGui.QPlainTextEdit(self.centralwidget)
         #self.plainTextEdit_6.setGeometry(QtCore.QRect(160, 450, 181, 31))
         #self.plainTextEdit_6.setObjectName(_fromUtf8("plainTextEdit_6"))
 
+
+        data_edu = [(("Illiterate",True),[]),
+        (("Literate",False), [(("High School",True), []),(("Degree",True), []),(("Masters",True), []),(("Professional",True), [])])]
+
+        self.model_edu = QStandardItemModel()
+        self.additems(self.model_edu, data_edu)
+
         self.dropdown_edu = QtGui.QComboBox(self)
+        self.dropdown_edu.setView(QTreeView())
+        self.dropdown_edu.view().setHeaderHidden(True)
+        self.dropdown_edu.view().setItemsExpandable(True)
+        self.dropdown_edu.view().setRootIsDecorated(True)
+        self.dropdown_edu.setModel(self.model_edu)
+        '''self.dropdown_edu = QtGui.QComboBox(self)
         self.dropdown_edu.addItem("illiterate")
-        self.dropdown_edu.addItem("literate")
+        self.dropdown_edu.addItem("literate")'''
         self.dropdown_edu.move(160, 450)
-        self.dropdown_edu.resize(100, 25)
+        self.dropdown_edu.resize(150, 25)
         
         self.label_8 = QtGui.QLabel(self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(20, 460, 111, 17))
@@ -182,6 +214,15 @@ class Ui_PatientEntryForm(object):
         self.retranslateUi(PatientEntryForm)
         QtCore.QMetaObject.connectSlotsByName(PatientEntryForm)
 
+        
+    def additems(self, parent, elements):
+        for text, children in elements:
+            item = QStandardItem(text[0])
+            # root items are not selectable, users pick from child items
+            item.setSelectable(text[1])
+            parent.appendRow(item)
+            if children:
+                self.additems(item, children)
     def retranslateUi(self, PatientEntryForm):
         PatientEntryForm.setWindowTitle(_translate("PatientEntryForm", "Patient Entry Form", None))
         self.label.setText(_translate("PatientEntryForm", "Name:", None))
@@ -200,9 +241,6 @@ class Ui_PatientEntryForm(object):
         self.label_14.setText(_translate("PatientEntryForm", "Contact Relation:", None))
         self.label_15.setText(_translate("PatientEntryForm", "ID No:", None))
 
-        #for i in range(1,13):
-        #    temp = plainTextEdit_.join(i)
-        #    self.plainTextEdit_+i.setTabChangesFocus(True)
         self.plainTextEdit.setTabChangesFocus(True)
         self.plainTextEdit_2.setTabChangesFocus(True)
         self.plainTextEdit_3.setTabChangesFocus(True)
