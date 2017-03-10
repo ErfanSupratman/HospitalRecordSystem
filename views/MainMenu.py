@@ -280,7 +280,7 @@ class viewRecord(QtGui.QDialog):
 class Ui_MainMenu(object):
     def setupUi(self, MainMenu):
         MainMenu.setObjectName(_fromUtf8("MainMenu"))
-        MainMenu.resize(800, 600)
+        MainMenu.resize(840, 600)
         self.setWindowIcon(QtGui.QIcon(_fromUtf8('test.png')))
         self.centralwidget = QtGui.QWidget(MainMenu)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
@@ -302,22 +302,22 @@ class Ui_MainMenu(object):
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         
         self.pushButton_2 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(180, 490, 121, 41))
+        self.pushButton_2.setGeometry(QtCore.QRect(180, 490, 101, 41))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.pushButton_3 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(340, 490, 111, 41))
+        self.pushButton_3.setGeometry(QtCore.QRect(310, 490, 101, 41))
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
 
         self.pushButton_4 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(500, 490, 111, 41))
+        self.pushButton_4.setGeometry(QtCore.QRect(440, 490, 111, 41))
         self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
 
         self.pushButton_5 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(650, 490, 111, 41))
+        self.pushButton_5.setGeometry(QtCore.QRect(575, 490, 111, 41))
         self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
 
         self.pushButton_6 = QtGui.QPushButton(self.centralwidget)
-        self.pushButton_6.setGeometry(QtCore.QRect(800, 490, 131, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(710, 490, 121, 41))
         self.pushButton_6.setObjectName(_fromUtf8("pushButton_6"))
 
         self.label_3 = QtGui.QLabel(self.centralwidget)

@@ -194,11 +194,11 @@ class Ui_PatientEntryForm(object):
 
         self.plainTextEdit_12 = QtGui.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit_12.setGeometry(QtCore.QRect(540, 360, 181, 31))
-        self.plainTextEdit_12.setObjectName(_fromUtf8("plainTextEdit_11"))
+        self.plainTextEdit_12.setObjectName(_fromUtf8("plainTextEdit_12"))
 
         self.plainTextEdit_13 = QtGui.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit_13.setGeometry(QtCore.QRect(540, 420, 181, 31))
-        self.plainTextEdit_13.setObjectName(_fromUtf8("plainTextEdit_11"))
+        self.plainTextEdit_13.setObjectName(_fromUtf8("plainTextEdit_13"))
         
         self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(570, 480, 98, 27))
@@ -238,8 +238,8 @@ class Ui_PatientEntryForm(object):
         self.label_11.setText(_translate("PatientEntryForm", "Contact Name:", None))
         self.label_12.setText(_translate("PatientEntryForm", "Contact phone:", None))
         self.label_13.setText(_translate("PatientEntryForm", "Contact Addr:", None))
-        self.label_14.setText(_translate("PatientEntryForm", "Contact Relation:", None))
-        self.label_15.setText(_translate("PatientEntryForm", "ID No:", None))
+        self.label_14.setText(_translate("PatientEntryForm", "ID NO:", None))
+        self.label_15.setText(_translate("PatientEntryForm", "Contact Relation", None))
 
         self.plainTextEdit.setTabChangesFocus(True)
         self.plainTextEdit_2.setTabChangesFocus(True)

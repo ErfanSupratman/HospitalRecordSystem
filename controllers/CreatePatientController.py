@@ -27,6 +27,7 @@ def insertPatientDetails(inputsData):
                 idNos = inputsData['IDNo'],
                 conRTP = inputsData['ConRelation']
         )
+	print inputsData['ConRelation'],inputsData['IDNo']
 	insertRecord.save()
 
 #Insert the given patient data into the PatData table
